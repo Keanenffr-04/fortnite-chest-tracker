@@ -13,6 +13,14 @@ from app.ui.page_settings import SettingsPage
 from app.ui.theme import stylesheet
 
 
+NAV_TIPS = {
+    "Dashboard": "Your totals, chart and recent matches",
+    "Live Tracker": "Count chests during a match",
+    "History": "Every match, plus chests opened on any day",
+    "Settings": "Overlay, hotkeys, sound and more",
+}
+
+
 class MainWindow(QMainWindow):
     quit_requested = Signal()
 
@@ -56,6 +64,7 @@ class MainWindow(QMainWindow):
             self.stack.addWidget(page)
             btn = QPushButton(name)
             btn.setObjectName("nav")
+            btn.setToolTip(NAV_TIPS[name])
             btn.setCheckable(True)
             btn.setChecked(i == 0)
             btn.clicked.connect(lambda _=False, idx=i: self.show_page(idx))
@@ -63,7 +72,8 @@ class MainWindow(QMainWindow):
             sl.addWidget(btn)
         sl.addStretch(1)
         self.btn_stream = QPushButton()
-        self.btn_stream.setMinimumHeight(40)
+        self.btn_stream.setMinimumHeight(44)
+        self.btn_stream.setToolTip("Show or hide the on-screen counter (for streaming/recording)")
         self.btn_stream.clicked.connect(
             lambda: controller.set_overlay_visible(not controller.overlay_visible))
         sl.addWidget(self.btn_stream)

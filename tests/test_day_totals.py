@@ -2,7 +2,7 @@ from datetime import date, datetime
 
 from app.core.counter import ChestCounter
 from app.database.db import Database
-from app.ui.dashboard_model import day_bounds, day_summary, day_title, day_totals
+from app.ui.dashboard_model import day_bounds, day_summary, day_title, day_totals, days_back_for
 
 NOON = datetime(2026, 11, 18, 12, 0).timestamp()
 TODAY = date(2026, 11, 18)
@@ -58,3 +58,10 @@ def test_day_title_and_summary():
     assert day_title(date(2026, 11, 16), TODAY) == "Mon 16 Nov 2026"
     assert day_summary(0, 0) == "No matches on this day"
     assert day_summary(5, 1) == "1 match" and day_summary(9, 3) == "3 matches"
+
+
+def test_days_back_for_calendar_picks():
+    assert days_back_for(TODAY, TODAY) == 0
+    assert days_back_for(date(2026, 11, 11), TODAY) == 7
+    assert days_back_for(date(2026, 10, 31), TODAY) == 18          # across a month end
+    assert days_back_for(date(2026, 11, 25), TODAY) == 0           # future never goes negative

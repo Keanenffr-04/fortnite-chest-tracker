@@ -39,9 +39,10 @@ QPushButton#primary { border: none; font-weight: bold;
   background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @A1@, stop:1 @A2@); }
 QPushButton#step { padding: 0px; font-size: 9pt; }
 QPushButton#danger { border: 1px solid #ef4444; color: #ef4444; }
-QPushButton#nav { text-align: left; border: none; border-radius: 8px; padding: 10px 14px; background: transparent; }
+QPushButton#nav { text-align: left; border: none; border-left: 3px solid transparent; border-radius: 8px; padding: 11px 14px; margin-bottom: 2px; background: transparent; color: @MUTED@; }
 QPushButton#nav:hover { background: @CARD@; }
-QPushButton#nav:checked { background: @CARD@; border-left: 3px solid @A1@; font-weight: bold; }
+QPushButton#nav:checked { background: @CARD@; border-left: 3px solid @A1@; font-weight: bold; color: @TEXT@; }
+QToolTip { background: @CARD@; color: @TEXT@; border: 1px solid @BORDER@; padding: 4px; }
 QTableWidget, QListWidget { background: @CARD@; alternate-background-color: @PANEL@; border: 1px solid @BORDER@; border-radius: 10px; gridline-color: transparent; }
 QTableWidget::item { padding: 4px 8px; }
 QHeaderView::section { background: @PANEL@; border: none; padding: 6px; color: @MUTED@; }

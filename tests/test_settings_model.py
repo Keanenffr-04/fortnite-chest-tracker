@@ -72,3 +72,11 @@ def test_defaults_keeping():
     s.overlay_theme, s.data_dir, s.overlay_x, s.overlay_y = "red", "D:/x", 9, 8
     d = defaults_keeping(s)
     assert d.overlay_theme == "violet" and d.data_dir == "D:/x" and (d.overlay_x, d.overlay_y) == (9, 8)
+
+
+def test_every_section_has_a_blurb_and_every_field_a_tooltip():
+    from app.ui.settings_model import SECTION_BLURBS, tooltip
+    for name, fs in SECTIONS:
+        assert SECTION_BLURBS.get(name), name
+        for f in fs:
+            assert tooltip(f).strip(), f.key

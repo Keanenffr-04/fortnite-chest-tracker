@@ -15,6 +15,7 @@ THEMES = {
     "blue": ((59, 130, 246), (34, 211, 238)),
     "green": ((34, 197, 94), (20, 184, 166)),
     "red": ((239, 68, 68), (249, 115, 22)),
+    "pirate": ((245, 197, 66), (194, 120, 34)),      # gold coin + copper (v1.1.15)
 }
 OPACITY_PRESETS = [0.4, 0.6, 0.8, 1.0]
 SIZE_PRESETS = {"Small": 0.8, "Normal": 1.0, "Large": 1.3, "Extra large": 1.6}

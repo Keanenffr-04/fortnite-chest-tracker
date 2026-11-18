@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.1.15
+- Added: **calendar button** (📅) on the History day card, next to the arrows. Opens a small calendar; click a day and the card jumps to it. Future days cannot be picked. The arrows and **Today** keep working from the picked day
+- Added: **Pirate** theme (gold + copper, from the gold coin with a skull and crossbones the Pirate Shop token shows) in Settings > Theme. It colours the overlay, the chart and this window like the other themes
+- Added: `days_back_for()`; 2 new tests (the Qt calendar pop-up is untested until run on Windows)
+- Only 2 changes. The pirate look is split over 3 versions: colours now (v1.1.15), token icon + overlay restyle (v1.1.16), overlay polish (v1.1.17). Calibration/detection shift by 2 (see ROADMAP)
+- Backlog now: match comparison, per-week chart, per-day table, tooltips on every button, friend-friendly first-run tips, calendar highlights days that have matches
+
+## v1.1.14
+- Changed (UI tidy, part 2): **Live Tracker** has the status, timer and big counter in one card, taller buttons, hover tips on +1 / -1 / New match, and a friendly "Nothing yet" line instead of an empty list
+- Changed: **Settings** sections are now cards, each with a one-line explanation, hover tips on every setting, "Changes take effect when you press Apply", shorter button names, tidier Data card
+- Changed: sidebar polish: muted inactive items, clear highlight on the current page, hover tips for each page, taller Start/Stop stream button, styled tooltips everywhere
+- Added: `SECTION_BLURBS` + `tooltip()` in the settings model; 1 new test (the Qt pages are untested until run on Windows)
+- NOT done: overlay window polish moved into v1.1.15 (the pirate-token look restyles the overlay anyway, so doing it twice would waste work)
+- Backlog unchanged
+
 ## v1.1.13
 - Added: **chests opened on a day** card at the top of the History page. Shows the chests and matches for the chosen day; arrows step back/forward one day, **Today** jumps back. It follows midnight by itself, and the match in progress counts as today (same rule as the Dashboard)
 - Changed (UI tidy, part 1 of 2): Dashboard + History tables have alternating rows, no grid lines and roomier rows; the Dashboard lists the last 5 matches (all of them are on History); smaller stat-card numbers so the page fits; the banner now says how to count manually. Spacing tightened

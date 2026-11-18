@@ -4,7 +4,7 @@
 "Written, not run" means the code exists but has never run on a real PC / real Fortnite.
 Nothing here has been tested against real Fortnite yet.
 
-Versioning: v1.1.1 -> v1.1.19, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
+Versioning: v1.1.1 -> v1.1.21, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
 
 # MILESTONE 1 - Working tracker for you (v1.1.x)
 
@@ -64,26 +64,34 @@ Versioning: v1.1.1 -> v1.1.19, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [x] Dashboard chart: **Show per day / Show per match** button (last 14 days, today on the right, the match in progress counts as today) - date maths unit-tested
 - [ ] YOU: finish a few matches; check the star on History and the per-day toggle on the Dashboard
 - Taken from the Backlog because calibration/detection need your real samples (not received yet)
-## v1.1.13 - Chests per day + UI tidy part 1  [this release, written not run]
+## v1.1.13 - Chests per day + UI tidy part 1  [done, written not run]
 - [x] History page: **chests opened on a day** card (arrows / Today), live match counts as today - date maths unit-tested
 - [x] UI tidy part 1: Dashboard + History tables (alternating rows, no grid), 5 recent matches, smaller cards, clearer banner
 - [ ] YOU: open History, step through days, press +1 and check today's number goes up; check the Dashboard fits your screen
-## v1.1.14 - UI tidy part 2  [planned]
-- [ ] Live Tracker + Settings pages: grouped sections, plain-English labels, tooltips, friendlier for friends
-- [ ] Sidebar + overlay polish (consistent spacing, fonts, button styles)
-## v1.1.15 - Pirate-token look  [planned]
-- [ ] Research the Fortnite pirate token/doubloon visuals online first, then restyle the overlay counter + cards to match (new theme, token icon drawn in code, no copied game art)
-- [ ] Theme picker option for it
-## v1.1.16 - Calibration + switch detection on (NEEDS your real samples)
+## v1.1.14 - UI tidy part 2  [done, written not run]
+- [x] Live Tracker + Settings pages: cards, plain-English text, hover tips
+- [x] Sidebar polish (nav highlight, tooltips, button sizes)
+- [ ] YOU: check Live Tracker, every Settings section and the sidebar look right and nothing is cut off
+## v1.1.15 - Calendar + Pirate colours  [this release, written not run]
+- [x] History: calendar button next to the day arrows, click a day to jump to it - date maths unit-tested
+- [x] **Pirate** theme (gold + copper) in the theme picker - researched: the Pirate Shop token is a gold coin with a skull and crossbones
+- [ ] YOU: open History, press the calendar button, pick a past day, check the card, arrows and Today; pick Pirate in Settings > Theme and check the overlay, chart and window
+## v1.1.16 - Pirate token icon + overlay restyle  [planned]
+- [ ] Token icon drawn in code (gold coin, skull and crossbones, no copied game art)
+- [ ] Overlay counter + cards restyled to the pirate look (theme picker already has it)
+## v1.1.17 - Overlay polish + per-week chart  [planned]
+- [ ] Overlay window polish (moved from v1.1.14)
+- [ ] Dashboard chart: per week view (from the Backlog)
+## v1.1.18 - Calibration + switch detection on (NEEDS your real samples)
 - [ ] Calibration screen: confirm resolution + set the watch region (basis for friends' setups)
 - [ ] Switch detection on in the live counter (status shows Detecting)
-## v1.1.17 - Event validation + replay tests (NEEDS your real samples)
+## v1.1.19 - Event validation + replay tests (NEEDS your real samples)
 - [ ] Event state machine (prompt -> hold -> open) to cut false positives
 - [ ] Replay tests from recorded frames, accuracy numbers
-## v1.1.18 - Auto match + logging
+## v1.1.20 - Auto match + logging
 - [ ] Auto match start/reset (experimental, needs samples)
 - [ ] Log file + "open logs" button (so a friend can send you a crash report)
-## v1.1.19 - Packaging
+## v1.1.21 - Packaging
 - [ ] `.exe` build, release ZIP (replaces the .pyw for friends)
 - [ ] Real-gameplay test guide
 # MILESTONE 2 - Ready for friends (v1.2.x)
@@ -115,8 +123,8 @@ Versioning: v1.1.1 -> v1.1.19, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 
 # Backlog (ideas waiting for a version - rule: max 2 changes per version, the rest lands here)
 - Match comparison
-- Chart over time: per week view (per day was done in v1.1.12)
-- Per-day table / calendar view on History (v1.1.13 only has the one-day card)
+- Per-day table on History (v1.1.15 added the calendar picker; a full table/month view is still open)
+- Calendar highlights the days that have matches
 - Tooltips on every button + first-run tips for friends
 (Add new ideas below. Charts and daily/weekly totals were done in v1.1.9; personal-best highlight + per-day chart in v1.1.12.)
 
@@ -128,5 +136,5 @@ Versioning: v1.1.1 -> v1.1.19, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 
 # Known limits
 - The detection engine (v1.1.10) exists but is not switched on and has never seen real Fortnite; it needs real samples from you.
-- The overlay is manual-count only until it is switched on (v1.1.16).
+- The overlay is manual-count only until it is switched on (v1.1.18).
 - Fortnite should run in Windowed Fullscreen for the overlay to show.

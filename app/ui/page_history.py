@@ -5,13 +5,13 @@ import time
 from datetime import date, timedelta
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QDate, Qt
 from PySide6.QtGui import QColor, QFont
-from PySide6.QtWidgets import (QAbstractItemView, QFileDialog, QFrame, QHBoxLayout, QHeaderView, QLabel,
+from PySide6.QtWidgets import (QAbstractItemView, QCalendarWidget, QDialog, QFileDialog, QFrame, QHBoxLayout, QHeaderView, QLabel,
                                QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
 from app.ui.dashboard_model import (best_flags, chests_label, day_summary, day_title, day_totals,
-                                    export_filename, format_match_row, history_summary)
+                                    days_back_for, export_filename, format_match_row, history_summary)
 
 
 class HistoryPage(QWidget):
@@ -74,7 +74,10 @@ class HistoryPage(QWidget):
         self.btn_prev = QPushButton("\u25C0")
         self.btn_next = QPushButton("\u25B6")
         self.btn_today = QPushButton("Today")
-        for b in (self.btn_prev, self.btn_next):
+        self.btn_cal = QPushButton("\U0001F4C5")
+        self.btn_cal.setToolTip("Pick a day from a calendar")
+        self.btn_cal.clicked.connect(self.pick_day)
+        for b in (self.btn_prev, self.btn_next, self.btn_cal):
             b.setObjectName("step")
             b.setFixedSize(36, 36)
         self.btn_prev.setToolTip("Previous day")
@@ -94,6 +97,7 @@ class HistoryPage(QWidget):
         names.addWidget(self.day_name)
         names.addWidget(self.day_date)
         row.addLayout(names)
+        row.addWidget(self.btn_cal)
         row.addWidget(self.btn_today)
         row.addStretch(1)
         self.day_matches = QLabel("")
@@ -111,6 +115,26 @@ class HistoryPage(QWidget):
     def move_day(self, delta: int) -> None:
         self.days_back = max(0, self.days_back + delta)
         self.refresh_day()
+
+    def pick_day(self) -> None:
+        """Small calendar pop-up; clicking a day jumps the day card to it (future days are not selectable)."""
+        today = date.today()
+        shown = today - timedelta(days=self.days_back)
+        dlg = QDialog(self)
+        dlg.setWindowTitle("Pick a day")
+        lay = QVBoxLayout(dlg)
+        cal = QCalendarWidget()
+        cal.setGridVisible(False)
+        cal.setMaximumDate(QDate(today.year, today.month, today.day))
+        cal.setSelectedDate(QDate(shown.year, shown.month, shown.day))
+        lay.addWidget(cal)
+
+        def chosen(qd: QDate) -> None:
+            self.days_back = days_back_for(date(qd.year(), qd.month(), qd.day()), date.today())
+            self.refresh_day()
+            dlg.accept()
+        cal.clicked.connect(chosen)
+        dlg.exec()
 
     def refresh_day(self) -> None:
         today = date.today()

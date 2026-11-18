@@ -15,3 +15,7 @@ def test_accent_follows_theme_and_unknown_falls_back():
     assert "#a855f7" in stylesheet("violet")          # violet accent 1
     assert "#22c55e" in stylesheet("green")
     assert stylesheet("nonsense") == stylesheet("violet")
+
+
+def test_pirate_theme_is_gold_and_in_the_picker():
+    assert "pirate" in THEME_NAMES and "#f5c542" in stylesheet("pirate")

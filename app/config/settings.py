@@ -9,7 +9,7 @@ from pathlib import Path
 from app import APP_NAME
 
 
-THEME_NAMES = ("violet", "blue", "green", "red")
+THEME_NAMES = ("violet", "blue", "green", "red", "pirate")
 
 
 def app_data_dir() -> Path:

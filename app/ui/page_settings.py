@@ -3,11 +3,11 @@ from __future__ import annotations
 
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import (QCheckBox, QComboBox, QDoubleSpinBox, QFormLayout, QHBoxLayout, QLabel,
+from PySide6.QtWidgets import (QCheckBox, QComboBox, QDoubleSpinBox, QFormLayout, QFrame, QHBoxLayout, QLabel,
                                QLineEdit, QMessageBox, QPushButton, QScrollArea, QSlider, QSpinBox,
                                QVBoxLayout, QWidget)
 
-from app.ui.settings_model import SECTIONS, coerce, current_values
+from app.ui.settings_model import SECTIONS, SECTION_BLURBS, coerce, current_values, tooltip
 
 
 class _Percent(QWidget):
@@ -54,7 +54,7 @@ class SettingsPage(QWidget):
         body = QWidget()
         body.setObjectName("page")
         self.body = QVBoxLayout(body)
-        self.body.setSpacing(6)
+        self.body.setSpacing(14)
         for section, fields_ in SECTIONS:
             self._add_section(section, fields_)
         self._add_data_section()
@@ -65,10 +65,13 @@ class SettingsPage(QWidget):
         bar = QHBoxLayout()
         self.message = QLabel("")
         self.message.setWordWrap(True)
+        self.message.setText("Changes take effect when you press Apply.")
+        self.message.setObjectName("hint")
         self.btn_apply = QPushButton("Apply")
         self.btn_apply.setObjectName("primary")
         self.btn_apply.setMinimumHeight(36)
-        self.btn_reset = QPushButton("Reset settings to defaults")
+        self.btn_reset = QPushButton("Reset to defaults")
+        self.btn_reset.setToolTip("Puts every setting back to normal. Your statistics are not touched.")
         self.btn_reset.setMinimumHeight(36)
         bar.addWidget(self.message, 1)
         bar.addWidget(self.btn_reset)
@@ -105,15 +108,33 @@ class SettingsPage(QWidget):
         w.setPlaceholderText("e.g. ctrl+shift+o")
         return w
 
-    def _add_section(self, name, fields_) -> None:
+    def _card(self, name: str, blurb: str = ""):
+        """A rounded card with a heading (and a one-line explanation); returns the card's layout."""
+        card = QFrame()
+        card.setObjectName("card")
+        lay = QVBoxLayout(card)
+        lay.setContentsMargins(18, 14, 18, 14)
+        lay.setSpacing(6)
         head = QLabel(name)
         head.setObjectName("sectionTitle")
-        self.body.addWidget(head)
+        head.setStyleSheet("margin-top: 0px;")
+        lay.addWidget(head)
+        if blurb:
+            sub = QLabel(blurb)
+            sub.setObjectName("muted")
+            sub.setWordWrap(True)
+            lay.addWidget(sub)
+        self.body.addWidget(card)
+        return lay
+
+    def _add_section(self, name, fields_) -> None:
+        lay = self._card(name, SECTION_BLURBS.get(name, ""))
         form = QFormLayout()
         form.setHorizontalSpacing(20)
         form.setVerticalSpacing(8)
         for f in fields_:
             w = self._make_widget(f)
+            w.setToolTip(tooltip(f))
             self._w[f.key] = w
             if f.kind == "bool":
                 w.setText(f.label)
@@ -127,29 +148,30 @@ class SettingsPage(QWidget):
                 form.addRow("", hint)
         if name == "Sound":
             test = QPushButton("Play test sound")
+            test.setToolTip("Plays the chime at the SAVED volume. Press Apply first to hear changes.")
             test.clicked.connect(self._test_sound)
             form.addRow("", test)
-        self.body.addLayout(form)
+        lay.addLayout(form)
 
     def _add_data_section(self) -> None:
-        head = QLabel("Data")
-        head.setObjectName("sectionTitle")
-        self.body.addWidget(head)
+        lay = self._card("Data", "Your matches and settings live in one folder on this PC.")
         self.data_dir = QLabel("")
-        self.data_dir.setObjectName("muted")
+        self.data_dir.setObjectName("hint")
         self.data_dir.setWordWrap(True)
         self.data_dir.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        self.body.addWidget(self.data_dir)
+        lay.addWidget(self.data_dir)
         row = QHBoxLayout()
         btn_open = QPushButton("Open data folder")
+        btn_open.setToolTip("Opens the folder in Explorer.")
         btn_open.clicked.connect(self._open_data_dir)
         btn_wipe = QPushButton("Reset statistics...")
         btn_wipe.setObjectName("danger")
+        btn_wipe.setToolTip("Deletes all saved matches. Asks you to confirm first.")
         btn_wipe.clicked.connect(self.reset_statistics)
         row.addWidget(btn_open)
         row.addWidget(btn_wipe)
         row.addStretch(1)
-        self.body.addLayout(row)
+        lay.addLayout(row)
 
     # ---- widget <-> value ------------------------------------------------
     def _get(self, f):
@@ -192,7 +214,7 @@ class SettingsPage(QWidget):
             if self._loaded.get(f.key, object()) != values[f.key]:
                 self._set(f, values[f.key])
                 self._loaded[f.key] = values[f.key]
-        self.data_dir.setText(f"Settings and database are stored in:  {settings.data_dir}")
+        self.data_dir.setText(settings.data_dir)
 
     # ---- actions ---------------------------------------------------------
     def _say(self, text: str, ok: bool) -> None:

@@ -42,6 +42,11 @@ def day_title(d: date, today: date) -> str:
     return d.strftime("%a %d %b %Y")
 
 
+def days_back_for(picked: date, today: date) -> int:
+    """How many days before `today` a calendar pick is. Future dates count as today (never negative)."""
+    return max(0, (today - picked).days)
+
+
 def day_summary(chests: int, matches: int) -> str:
     if not matches:
         return "No matches on this day"

@@ -1,4 +1,4 @@
-# Fortnite Live Chest Tracker - v1.1.13
+# Fortnite Live Chest Tracker - v1.1.14
 
 Counts chests you open in Fortnite and shows a live overlay. Local Windows app, works offline.
 
@@ -6,7 +6,7 @@ Counts chests you open in Fortnite and shows a live overlay. Local Windows app, 
 Automatic chest detection is NOT built yet: you count manually (hotkeys, overlay menu or the Live Tracker page).
 v1.1.7: the overlay (the small box) no longer pops up on its own. Press **Start stream** in the main window's
 sidebar to show it, **Stop stream** to hide it. v1.1.8 added a History page with an Export CSV button; v1.1.9 added a chests-per-match chart and Today / Last 7 days
-cards to the Dashboard. v1.1.10 adds the detection engine and a debug tool (command line only, not wired into the live counter yet). v1.1.11 replaces `run.bat` with a double-click `FortniteChestTracker.pyw`. v1.1.12: your personal-best matches get a gold star on the History page, and the Dashboard chart can switch between per match and per day. v1.1.13: the History page has a **chests opened on this day** card (arrows to pick a day), and the Dashboard/History tables are tidier. A UI tidy-up and a pirate-token look are planned for v1.1.14-15.
+cards to the Dashboard. v1.1.10 adds the detection engine and a debug tool (command line only, not wired into the live counter yet). v1.1.11 replaces `run.bat` with a double-click `FortniteChestTracker.pyw`. v1.1.12: your personal-best matches get a gold star on the History page, and the Dashboard chart can switch between per match and per day. v1.1.13: the History page has a **chests opened on this day** card (arrows to pick a day), and the Dashboard/History tables are tidier. v1.1.14: Live Tracker and Settings are tidied (cards, hover tips, plain-English text). The pirate-token look is planned for v1.1.15.
 Nothing has been tested on real Fortnite yet. See ROADMAP.md.
 
 ## Install

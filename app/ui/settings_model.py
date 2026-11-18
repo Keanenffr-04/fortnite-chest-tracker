@@ -63,6 +63,30 @@ SECTIONS: tuple[tuple[str, tuple[Field, ...]], ...] = (
 FIELDS: dict[str, Field] = {f.key: f for _, fields_ in SECTIONS for f in fields_}
 
 
+SECTION_BLURBS = {
+    "Overlay": "How the small counter box on your screen looks and behaves.",
+    "Hotkeys": "Keys that work while Fortnite is in front. Leave a box empty to turn that key off.",
+    "Detection": "Automatic counting is not switched on yet; these only matter once it is.",
+    "Sound": "The chime when a chest is counted (rising) or removed (falling).",
+    "Startup": "Whether the tracker opens by itself when you log in to Windows.",
+}
+
+_DEFAULT_TIPS = {
+    "overlay_opacity": "How see-through the overlay is. Lower = more transparent.",
+    "overlay_theme": "Colour scheme for the overlay and this window.",
+    "overlay_show_status": "Show the status line (e.g. Manual) on the overlay.",
+    "overlay_show_session": "Show your total for this session on the overlay.",
+    "overlay_show_timer": "Show the match timer on the overlay.",
+    "sound_enabled": "Turn the counting chime on or off.",
+    "sound_volume": "How loud the chime is.",
+    "detection_interval_ms": "How often the screen is checked. Lower = faster but heavier on your PC.",
+}
+
+
+def tooltip(f: Field) -> str:
+    """Hover text for a setting: its hint if it has one, otherwise a plain-English line."""
+    return f.hint or _DEFAULT_TIPS.get(f.key, f.label)
+
 def coerce(field: Field, value):
     """Convert a widget value to the right type. Raises ValueError/TypeError if unusable."""
     k = field.kind
