@@ -1,0 +1,2 @@
+# v1.1.1 needs nothing beyond Python itself.
+# Packages get added here in the version that first uses them.
