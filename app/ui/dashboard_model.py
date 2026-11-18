@@ -2,19 +2,41 @@
 from __future__ import annotations
 
 import time
+from datetime import date, datetime, time as dtime, timedelta
 
 from app.overlay.model import format_timer
 
-DETECTION_BANNER = ("Counting is manual for now. Automatic chest detection arrives in v1.1.9 "
-                    "and needs your recorded samples.")
+DETECTION_BANNER = ("Counting is manual for now. The detection engine is built but not switched on yet: "
+                    "it needs your recorded samples to be tuned.")
 
 
-def overall_stats(db, counter) -> dict:
+def day_start(now: float, days_back: int = 0) -> float:
+    """Local midnight, days_back days before the day that contains `now`."""
+    d = datetime.fromtimestamp(now).date() - timedelta(days=days_back)
+    return datetime.combine(d, dtime.min).timestamp()
+
+
+def chart_values(db, counter, limit: int = 20) -> list[int]:
+    """Chests per match, oldest -> newest, ending with the match in progress (if it has chests)."""
+    vals = [r["chests"] for r in reversed(db.recent_matches(limit))]
+    if counter.match_count > 0:
+        vals.append(counter.match_count)
+    return vals[-limit:]
+
+
+def bar_fractions(values: list[int]) -> list[float]:
+    """Bar heights as 0..1 of the tallest bar (an all-zero list gives all zeros)."""
+    top = max(values, default=0)
+    return [v / top if top else 0.0 for v in values]
+
+
+def overall_stats(db, counter, now: float | None = None) -> dict:
     """Saved history + the match in progress (an empty live match is not counted as a match,
     the same rule used when matches are stored)."""
     live = counter.match_count
     matches = db.total_matches() + (1 if live > 0 else 0)
     total = db.total_chests() + live
+    now = time.time() if now is None else now
     return {
         "match": live,
         "session": counter.session_count,
@@ -22,6 +44,9 @@ def overall_stats(db, counter) -> dict:
         "matches": matches,
         "average": round(total / matches, 1) if matches else 0.0,
         "best": max(db.personal_best(), live),
+        # the match in progress counts as today (it is being played now)
+        "today": db.chests_since(day_start(now)) + live,
+        "week": db.chests_since(day_start(now, 6)) + live,      # today + the 6 days before
     }
 
 
@@ -34,6 +59,8 @@ def stat_cards(stats: dict) -> list[tuple[str, str]]:
         ("Matches", str(stats["matches"])),
         ("Average / match", f"{stats['average']:.1f}"),
         ("Personal best", str(stats["best"])),
+        ("Today", str(stats["today"])),
+        ("Last 7 days", str(stats["week"])),
     ]
 
 

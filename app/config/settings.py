@@ -26,6 +26,11 @@ class Settings:
     detection_sensitivity: float = 0.80   # min confidence 0.0-1.0 to accept
     detection_cooldown_s: float = 1.5     # ignore repeat detections inside this window
     detection_interval_ms: int = 100      # capture/scan interval (10 fps default)
+    # Watch region as fractions of the screen (placeholder until calibration, v1.1.11)
+    detection_roi_x: float = 0.30
+    detection_roi_y: float = 0.55
+    detection_roi_w: float = 0.40
+    detection_roi_h: float = 0.35
     sound_enabled: bool = True
     sound_volume: float = 0.5
     # Capture / recording (v1.1.2)
@@ -60,6 +65,10 @@ class Settings:
         self.detection_cooldown_s = max(0.0, float(self.detection_cooldown_s))
         self.detection_interval_ms = max(20, int(self.detection_interval_ms))
         self.sound_volume = min(1.0, max(0.0, float(self.sound_volume)))
+        from app.detect.roi import Roi
+        r = Roi(float(self.detection_roi_x), float(self.detection_roi_y),
+                float(self.detection_roi_w), float(self.detection_roi_h)).normalised()
+        self.detection_roi_x, self.detection_roi_y, self.detection_roi_w, self.detection_roi_h = r.x, r.y, r.w, r.h
         if self.overlay_theme not in THEME_NAMES:
             self.overlay_theme = "violet"
         self.capture_monitor = max(1, int(self.capture_monitor))

@@ -45,7 +45,7 @@ SECTIONS: tuple[tuple[str, tuple[Field, ...]], ...] = (
     )),
     ("Detection", (
         Field("detection_sensitivity", "Sensitivity", "percent", 0.0, 1.0,
-              hint="Minimum confidence to count. Detection itself arrives in v1.1.9."),
+              hint="Minimum confidence to count. Automatic counting is not switched on yet."),
         Field("detection_cooldown_s", "Cooldown (seconds)", "float", 0.0, 10.0, 0.1,
               hint="Ignore repeat detections inside this window."),
         Field("detection_interval_ms", "Scan interval (ms)", "int", 20, 1000, 10),

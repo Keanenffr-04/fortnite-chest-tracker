@@ -4,7 +4,7 @@
 "Written, not run" means the code exists but has never run on a real PC / real Fortnite.
 Nothing here has been tested against real Fortnite yet.
 
-Versioning: v1.1.1 -> v1.1.11, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
+Versioning: v1.1.1 -> v1.1.13, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
 
 # MILESTONE 1 - Working tracker for you (v1.1.x)
 
@@ -14,7 +14,7 @@ Versioning: v1.1.1 -> v1.1.11, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 
 ## v1.1.2 - Screen capture + sample recorder  [done]
 - [x] Capture, recorder, `--benchmark` (run on your PC: 45.5 ms grab, 17.6 fps max)
-- [ ] YOU: record real chest samples (needed for v1.1.9)
+- [ ] YOU: record real chest samples (needed for v1.1.10)
 
 ## v1.1.3 - Overlay (basic)  [done, written not run]
 - [x] Frameless always-on-top overlay, draggable, manual counting
@@ -42,19 +42,27 @@ Versioning: v1.1.1 -> v1.1.11, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [x] Overlay stays hidden when the app opens; **Start stream** / **Stop stream** button in the sidebar shows / hides it
 - [x] Hotkey and overlay-menu hide/show stay in sync with the button - controller logic unit-tested
 - [ ] YOU: run `run.bat`; check the overlay is hidden at start, Start stream shows it, Stop stream hides it, Ctrl+Shift+O keeps the button label right
-## v1.1.8 - Match history + CSV export  [this release, written not run]
+## v1.1.8 - Match history + CSV export  [done, written not run]
 - [x] History page: every finished match, newest first
 - [x] Export CSV button (save dialog, success/error message) - export logic unit-tested
 - [ ] YOU: finish a couple of matches, open History, check they are listed; press Export CSV and open the file in Excel
-## v1.1.9 - Detection engine v1 + calibration (NEEDS your real samples)
-- [ ] Region (ROI) detector using your reference frames, confidence score
-- [ ] Detection debug view
-- [ ] Calibration screen: confirm resolution + watch region (basis for friends' setups)
-## v1.1.10 - Event validation, replay tests, auto match detection
+## v1.1.9 - Dashboard chart + daily/weekly totals  [done, written not run]
+- [x] Bar chart of chests per match (last 20)
+- [x] Today / Last 7 days cards - date maths unit-tested
+- [ ] YOU: finish a few matches, check the chart and both cards look right and update when you press +1
+## v1.1.10 - Detection engine v1 + debug view  [this release, written not run]
+- [x] Region (ROI) template detector with confidence score - unit-tested on synthetic frames only
+- [x] Detection debug view: `--make-template`, `--detect-debug` (per-frame confidence, DETECTED / MISSED / FALSE ALARM, annotated pictures)
+- [ ] YOU: record real chest samples (`--record`), cut a template from one, run `--detect-debug` and send me the output + a few annotated pictures
+- Not wired into the live counter yet
+## v1.1.11 - Calibration + event validation (NEEDS your real samples)
+- [ ] Calibration screen: confirm resolution + set the watch region (basis for friends' setups)
 - [ ] Event state machine (prompt -> hold -> open) to cut false positives
+- [ ] Switch detection on in the live counter (status shows Detecting)
+## v1.1.12 - Replay tests + auto match detection
 - [ ] Replay tests from recorded frames, accuracy numbers
 - [ ] Auto match start/reset (experimental, needs samples)
-## v1.1.11 - Packaging + logging
+## v1.1.13 - Packaging + logging
 - [ ] `.exe` build, release ZIP
 - [ ] Log file + "open logs" button (so a friend can send you a crash report)
 - [ ] Real-gameplay test guide
@@ -87,10 +95,10 @@ Versioning: v1.1.1 -> v1.1.11, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [ ] Evaluate Windows RegisterHotKey instead of the `keyboard` global hook (lighter footprint)
 
 # Backlog (ideas waiting for a version - rule: max 2 changes per version, the rest lands here)
-- Charts (chests per match, over time)
-- Totals: daily / weekly, personal-best highlights
 - Match comparison
-(Moved here from the old v1.1.8 so each version stays at 2 changes. Add new ideas below.)
+- Personal-best highlights
+- Chart over time (per day / per week), not just per match
+(Add new ideas below. Charts and daily/weekly totals were done in v1.1.9.)
 
 # Before sharing with friends (checklist)
 - [ ] Choose a licence (I will not pick one without asking)
@@ -99,6 +107,6 @@ Versioning: v1.1.1 -> v1.1.11, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [ ] Test on at least one other PC with different resolution/GPU
 
 # Known limits
-- No chest detection exists until v1.1.9, and it needs real Fortnite samples from you.
-- The overlay is manual-count only until then.
+- The detection engine (v1.1.10) exists but is not switched on and has never seen real Fortnite; it needs real samples from you.
+- The overlay is manual-count only until it is switched on (v1.1.11).
 - Fortnite should run in Windowed Fullscreen for the overlay to show.

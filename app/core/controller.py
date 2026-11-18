@@ -36,7 +36,7 @@ class TrackerController:
         # Whether the overlay (the small box) is showing. NOT saved: the main window starts with it
         # hidden and you press Start stream to show it.
         self.overlay_visible = bool(overlay_visible)
-        self.status = STATUS_MANUAL      # a detector (v1.1.9) will change this
+        self.status = STATUS_MANUAL      # the detector will change this once it is switched on
         self.counter = ChestCounter(settings.detection_sensitivity, settings.detection_cooldown_s)
         self.session_id = db.start_session(time.time())
         self._listeners: list[Callable[[str], None]] = []

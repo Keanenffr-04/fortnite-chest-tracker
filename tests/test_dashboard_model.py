@@ -16,7 +16,8 @@ def counter_with(n):
 def test_stats_empty():
     db = Database(":memory:")
     s = overall_stats(db, counter_with(0))
-    assert s == {"match": 0, "session": 0, "total": 0, "matches": 0, "average": 0.0, "best": 0}
+    assert s == {"match": 0, "session": 0, "total": 0, "matches": 0, "average": 0.0, "best": 0,
+                 "today": 0, "week": 0}
 
 
 def test_stats_combine_saved_and_live():
@@ -31,9 +32,10 @@ def test_stats_combine_saved_and_live():
 
 
 def test_stat_cards_order_and_text():
-    cards = stat_cards({"match": 1, "session": 2, "total": 3, "matches": 4, "average": 0.75, "best": 5})
+    cards = stat_cards({"match": 1, "session": 2, "total": 3, "matches": 4, "average": 0.75, "best": 5,
+                        "today": 6, "week": 7})
     assert [l for l, _ in cards] == ["This match", "This session", "Total chests",
-                                     "Matches", "Average / match", "Personal best"]
+                                     "Matches", "Average / match", "Personal best", "Today", "Last 7 days"]
     assert dict(cards)["Average / match"] == "0.8"      # one decimal
 
 

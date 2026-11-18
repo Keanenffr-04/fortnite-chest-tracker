@@ -46,6 +46,9 @@ def main() -> int:
     p.add_argument("--app", action="store_true", help="open the main window (dashboard) + overlay")
     p.add_argument("--overlay", action="store_true", help="show only the live overlay (manual counting for now)")
     p.add_argument("--benchmark", action="store_true", help="measure screen capture speed")
+    p.add_argument("--detect-debug", metavar="FOLDER", help="run the detector on recorded samples and save annotated frames")
+    p.add_argument("--make-template", nargs=6, metavar=("FRAME", "NAME", "X", "Y", "W", "H"),
+                   help="cut a reference template out of a sample frame (X Y W H = fractions 0-1)")
     a = p.parse_args()
     if a.version:
         print(__version__); return 0
@@ -63,10 +66,22 @@ def main() -> int:
     if a.benchmark:
         from app.capture.tool import run_benchmark
         return run_benchmark()
+    if a.detect_debug:
+        from app.detect.debug import run_detect_debug
+        return run_detect_debug(a.detect_debug)
+    if a.make_template:
+        from app.detect.debug import run_make_template
+        frame, name, x, y, w, h = a.make_template
+        try:
+            box = [float(v) for v in (x, y, w, h)]
+        except ValueError:
+            print("X Y W H must be numbers between 0 and 1"); return 1
+        return run_make_template(frame, name, *box)
     print(f"Fortnite Chest Tracker {__version__}\n"
-          "Chest detection is NOT built yet (see ROADMAP.md).\n"
+          "Automatic counting is NOT switched on yet: the detection engine exists (--detect-debug) but is not wired in (see ROADMAP.md).\n"
           "Run with --app for the dashboard + overlay, --overlay for the overlay only,\n"
-          "--selftest to verify the core logic, --benchmark to measure capture, --record to collect samples.")
+          "--selftest to verify the core logic, --benchmark to measure capture, --record to collect samples,\n"
+          "--make-template / --detect-debug to build and test detection templates.")
     return 0
 
 

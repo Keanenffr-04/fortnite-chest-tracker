@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.1.10
+- Added: detection engine v1 (`app/detect`): template matching inside a watch region (ROI, stored as screen fractions so it does not depend on resolution). Gives a confidence 0-1 per frame and the position of the best match. Templates are scaled if the frame width differs from the one they were cut from (basic only; proper resolution support is v1.2.2). Flat or too-big templates are skipped with a reason
+- Added: detection debug view, command line: `--make-template` cuts a template out of a sample frame, `--detect-debug <folder>` runs the detector over recorded samples, prints confidence per frame, says DETECTED / MISSED / FALSE ALARM per sample and saves annotated pictures
+- Added: settings `detection_roi_x/y/w/h` (placeholder default; old settings files load fine)
+- NOT done: the detector is not connected to the live counter, overlay or status, so counting is still manual. It has never seen real Fortnite: the default region and any confidence numbers are untested until you record samples and run `--detect-debug`
+- Moved: the calibration screen to v1.1.11 (kept to 2 changes). Later versions shift by one (packaging + logging is now v1.1.13)
+- Tests: 110 total (20 new, all on synthetic frames). Dashboard banner and Detection hint text reworded
+
+## v1.1.9
+- Added: bar chart on the Dashboard showing chests per match (last 20, newest on the right, the match in progress is the last bar). It follows the overlay theme colours
+- Added: **Today** and **Last 7 days** cards on the Dashboard (today + the 6 days before, by your local midnight). The match in progress counts as today. Cards are now 4 per row
+- Taken from the Backlog; detection was NOT started because it needs your recorded samples, so it moves to v1.1.10 (later versions shift by one)
+- Tests: 90 total (5 new, 2 updated). The chart drawing is untested until run on Windows
+
 ## v1.1.8
 - Added: **History** page (sidebar, between Live Tracker and Settings) listing every finished match, newest first, with a one-line total
 - Added: **Export CSV** button on the History page. Pick where to save (suggested name `chest_matches_<date>.csv`); you get a message with the number of matches saved, or the reason if it failed. The match in progress is not exported until you press New match

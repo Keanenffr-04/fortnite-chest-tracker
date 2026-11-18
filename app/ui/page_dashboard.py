@@ -1,11 +1,12 @@
-"""Dashboard page: stat cards + recent matches. (Full history + CSV export: History page. Charts are in the backlog.)"""
+"""Dashboard page: stat cards + recent matches. Chart of chests per match; Today / Last 7 days cards. Full history + CSV export: History page."""
 from __future__ import annotations
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QAbstractItemView, QGridLayout, QHeaderView, QLabel, QTableWidget,
                                QTableWidgetItem, QVBoxLayout, QWidget)
 
-from app.ui.dashboard_model import DETECTION_BANNER, format_match_row, stat_cards
+from app.ui.chart import BarChart
+from app.ui.dashboard_model import DETECTION_BANNER, chart_values, format_match_row, stat_cards
 from app.ui.widgets import Card
 
 HISTORY_ROWS = 10
@@ -35,8 +36,14 @@ class DashboardPage(QWidget):
         for i, (label, value) in enumerate(stat_cards(self.ctl.stats())):
             card = Card(label, value)
             self.cards.append(card)
-            grid.addWidget(card, i // 3, i % 3)
+            grid.addWidget(card, i // 4, i % 4)
         lay.addLayout(grid)
+
+        cap = QLabel("Chests per match (last 20, newest on the right)")
+        cap.setObjectName("sectionTitle")
+        lay.addWidget(cap)
+        self.chart = BarChart()
+        lay.addWidget(self.chart)
 
         sub = QLabel(f"Recent matches (last {HISTORY_ROWS})")
         sub.setObjectName("sectionTitle")
@@ -56,6 +63,10 @@ class DashboardPage(QWidget):
         self.empty.setWordWrap(True)
         lay.addWidget(self.empty)
         self.refresh_table()
+        self.refresh_chart()
+
+    def refresh_chart(self) -> None:
+        self.chart.set_data(chart_values(self.ctl.db, self.ctl.counter), self.ctl.settings.overlay_theme)
 
     def refresh_cards(self) -> None:
         for card, (_, value) in zip(self.cards, stat_cards(self.ctl.stats())):
@@ -75,5 +86,7 @@ class DashboardPage(QWidget):
 
     def on_change(self, kind: str) -> None:
         self.refresh_cards()
+        if kind in ("count", "match", "reset", "settings"):
+            self.refresh_chart()
         if kind in ("match", "reset"):
             self.refresh_table()

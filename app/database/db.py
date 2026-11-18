@@ -85,6 +85,11 @@ class Database:
         return self.conn.execute(
             "SELECT * FROM matches ORDER BY started_at DESC LIMIT ?", (limit,)).fetchall()
 
+    def chests_since(self, ts: float) -> int:
+        """Chests in finished matches that started at or after ts."""
+        return self.conn.execute(
+            "SELECT COALESCE(SUM(chests),0) FROM matches WHERE started_at>=?", (ts,)).fetchone()[0]
+
     def all_matches(self) -> list[sqlite3.Row]:
         """Every finished match, newest first (the History page)."""
         return self.conn.execute("SELECT * FROM matches ORDER BY started_at DESC, id DESC").fetchall()
