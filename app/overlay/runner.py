@@ -1,4 +1,4 @@
-"""Wires settings + counter + database + overlay window together (`python main.py --overlay`)."""
+"""Wires settings + counter + database + sound + hotkeys + overlay together (`python main.py --overlay`)."""
 from __future__ import annotations
 
 import sys
@@ -6,9 +6,11 @@ import time
 
 from app.config.settings import Settings, app_data_dir
 from app.core.counter import ChestCounter
+from app.core.sound import SoundPlayer
 from app.database.db import Database
 from app.overlay.hotkey_map import build_bindings
-from app.overlay.model import STATUS_MANUAL, clamp_position, scaled_size, snapshot
+from app.overlay.model import (STATUS_MANUAL, apply_option, clamp_position,
+                               options_from_settings, scaled_size, snapshot)
 
 
 def run_overlay() -> int:
@@ -26,12 +28,18 @@ def run_overlay() -> int:
     db = Database(app_data_dir() / "chests.db")
     session_id = db.start_session(time.time())
     counter = ChestCounter(settings.detection_sensitivity, settings.detection_cooldown_s)
+    sound = SoundPlayer(app_data_dir() / "sounds", settings.sound_enabled, settings.sound_volume)
 
-    win = OverlayWindow(settings.overlay_scale, settings.overlay_opacity)
+    win = OverlayWindow(options_from_settings(settings))
     screen = app.primaryScreen().availableGeometry()
-    w, h = scaled_size(settings.overlay_scale)
-    x, y = clamp_position(settings.overlay_x, settings.overlay_y, w, h, screen.width(), screen.height())
-    win.move(x, y)
+
+    def place():
+        footer = settings.overlay_show_session or settings.overlay_show_timer
+        w, h = scaled_size(settings.overlay_scale, footer)
+        x, y = clamp_position(settings.overlay_x, settings.overlay_y, w, h, screen.width(), screen.height())
+        win.move(x, y)
+
+    place()
 
     def refresh():
         win.set_snapshot(snapshot(counter, STATUS_MANUAL))
@@ -56,24 +64,37 @@ def run_overlay() -> int:
 
     def add():
         counter.manual_adjust(1)
+        sound.play_up()
         refresh()
 
     def remove():
+        had_chest = counter.match_count > 0
         counter.manual_adjust(-1)
+        if had_chest:
+            sound.play_down()
         refresh()
 
-    def save_settings():
+    def on_option(key, value):
+        try:
+            apply_option(settings, key, value)
+        except ValueError as e:
+            print(f"Ignored option change: {e}")
+            return
         settings.save()
+        win.apply_options(options_from_settings(settings))
+        sound.update(settings.sound_enabled, settings.sound_volume)
+        place()
+        refresh()
 
     def toggle_visible():
         win.setVisible(not win.isVisible())
         settings.overlay_visible = win.isVisible()
-        save_settings()
+        settings.save()
 
     def toggle_click_through():
         settings.overlay_click_through = not win.locked
         win.set_click_through(settings.overlay_click_through)
-        save_settings()
+        settings.save()
 
     actions = {
         "toggle_overlay": toggle_visible,
@@ -103,6 +124,7 @@ def run_overlay() -> int:
     win.chest_added.connect(add)
     win.chest_removed.connect(remove)
     win.new_match_requested.connect(new_match)
+    win.option_changed.connect(on_option)
     win.quit_requested.connect(app.quit)
     win.moved.connect(save_position)
     app.aboutToQuit.connect(finish)

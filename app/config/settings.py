@@ -9,6 +9,9 @@ from pathlib import Path
 from app import APP_NAME
 
 
+THEME_NAMES = ("violet", "blue", "green", "red")
+
+
 def app_data_dir() -> Path:
     """%APPDATA%\\FortniteChestTracker on Windows, ~/.fortnitechesttracker elsewhere."""
     base = os.environ.get("APPDATA")
@@ -24,6 +27,7 @@ class Settings:
     detection_cooldown_s: float = 1.5     # ignore repeat detections inside this window
     detection_interval_ms: int = 100      # capture/scan interval (10 fps default)
     sound_enabled: bool = True
+    sound_volume: float = 0.5
     # Capture / recording (v1.1.2)
     capture_monitor: int = 1              # 1 = primary monitor
     record_pre_s: float = 5.0             # seconds of footage kept BEFORE you press the mark key
@@ -38,6 +42,10 @@ class Settings:
     overlay_scale: float = 1.0
     overlay_click_through: bool = False
     overlay_visible: bool = True
+    overlay_theme: str = "violet"
+    overlay_show_session: bool = True
+    overlay_show_timer: bool = True
+    overlay_show_status: bool = True
     # Hotkeys
     hotkey_toggle_overlay: str = "ctrl+shift+o"
     hotkey_add_chest: str = "ctrl+shift+up"
@@ -52,6 +60,9 @@ class Settings:
         self.detection_sensitivity = min(1.0, max(0.0, float(self.detection_sensitivity)))
         self.detection_cooldown_s = max(0.0, float(self.detection_cooldown_s))
         self.detection_interval_ms = max(20, int(self.detection_interval_ms))
+        self.sound_volume = min(1.0, max(0.0, float(self.sound_volume)))
+        if self.overlay_theme not in THEME_NAMES:
+            self.overlay_theme = "violet"
         self.capture_monitor = max(1, int(self.capture_monitor))
         self.record_pre_s = min(15.0, max(1.0, float(self.record_pre_s)))
         self.record_post_s = min(15.0, max(0.5, float(self.record_post_s)))

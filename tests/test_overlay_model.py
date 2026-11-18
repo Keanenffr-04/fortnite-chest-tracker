@@ -31,3 +31,47 @@ def test_snapshot_reads_counter():
     t[0] = 75
     s = snapshot(c)
     assert s == {"match": 2, "session": 2, "timer": "01:15", "status": STATUS_MANUAL}
+
+
+def test_footer_hidden_makes_overlay_shorter():
+    from app.overlay.model import BASE_H_NO_FOOTER
+    assert scaled_size(1.0, footer=False) == (BASE_W, BASE_H_NO_FOOTER)
+    assert scaled_size(1.0, footer=False)[1] < scaled_size(1.0)[1]
+
+
+def test_theme_names_match_between_settings_and_model():
+    from app.config.settings import THEME_NAMES
+    from app.overlay.model import THEMES
+    assert set(THEME_NAMES) == set(THEMES)
+
+
+def test_apply_option_sets_and_clamps():
+    from app.config.settings import Settings
+    from app.overlay.model import apply_option, options_from_settings
+    st = Settings()
+    apply_option(st, "opacity", 0.6); apply_option(st, "scale", 99); apply_option(st, "theme", "blue")
+    apply_option(st, "show_timer", False); apply_option(st, "sound_enabled", False)
+    o = options_from_settings(st)
+    assert o["opacity"] == 0.6 and o["scale"] == 3.0 and o["theme"] == "blue"
+    assert o["show_timer"] is False and o["sound_enabled"] is False
+
+
+def test_apply_option_rejects_bad_input():
+    from app.config.settings import Settings
+    from app.overlay.model import apply_option
+    st = Settings()
+    for key, val in [("nope", 1), ("theme", "pink")]:
+        try:
+            apply_option(st, key, val)
+        except ValueError:
+            continue
+        raise AssertionError(f"{key}={val} should have been rejected")
+    assert st.overlay_theme == "violet"
+
+
+def test_old_settings_file_without_new_keys_still_loads(tmp_path):
+    from app.config.settings import Settings
+    p = tmp_path / "s.json"
+    p.write_text('{"overlay_x": 50, "overlay_theme": "garbage", "sound_volume": 7}')
+    s = Settings.load(p)
+    assert s.overlay_x == 50 and s.overlay_theme == "violet" and s.sound_volume == 1.0 and s.overlay_show_timer is True

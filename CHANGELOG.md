@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.5
+- Added: notification sounds (generated WAVs, played with winsound), volume setting
+- Added: right-click menu for opacity, size, theme (violet/blue/green/red), show/hide status/session/timer, sound
+- Added: 11 tests (42 total). Qt menu and audio untested until run on Windows
+- Roadmap: rewritten with friends-release milestones (v1.2.x) and extras (v1.3.x)
+
 ## v1.1.4
 - Added: global hotkeys, click-through (LOCKED) mode, hotkey validation, smarter run.bat
 - Fixed: stale "overlay not built" message
