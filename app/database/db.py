@@ -95,6 +95,13 @@ class Database:
         return self.conn.execute(
             "SELECT started_at, chests FROM matches WHERE started_at>=? ORDER BY started_at", (ts,)).fetchall()
 
+    def totals_between(self, start: float, end: float) -> tuple[int, int]:
+        """(chests, matches) of finished matches that started in [start, end)."""
+        r = self.conn.execute(
+            "SELECT COALESCE(SUM(chests),0), COUNT(*) FROM matches WHERE started_at>=? AND started_at<?",
+            (start, end)).fetchone()
+        return r[0], r[1]
+
     def all_matches(self) -> list[sqlite3.Row]:
         """Every finished match, newest first (the History page)."""
         return self.conn.execute("SELECT * FROM matches ORDER BY started_at DESC, id DESC").fetchall()

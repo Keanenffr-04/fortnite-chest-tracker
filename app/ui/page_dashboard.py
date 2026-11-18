@@ -10,7 +10,7 @@ from app.ui.dashboard_model import (DETECTION_BANNER, chart_values, daily_values
                                     stat_cards)
 from app.ui.widgets import Card
 
-HISTORY_ROWS = 10
+HISTORY_ROWS = 5
 
 
 class DashboardPage(QWidget):
@@ -20,7 +20,7 @@ class DashboardPage(QWidget):
         self.ctl = controller
         lay = QVBoxLayout(self)
         lay.setContentsMargins(28, 24, 28, 24)
-        lay.setSpacing(14)
+        lay.setSpacing(10)
 
         title = QLabel("Dashboard")
         title.setObjectName("pageTitle")
@@ -53,7 +53,7 @@ class DashboardPage(QWidget):
         self.chart = BarChart()
         lay.addWidget(self.chart)
 
-        sub = QLabel(f"Recent matches (last {HISTORY_ROWS})")
+        sub = QLabel(f"Recent matches (last {HISTORY_ROWS}, see History for all)")
         sub.setObjectName("sectionTitle")
         lay.addWidget(sub)
 
@@ -63,6 +63,9 @@ class DashboardPage(QWidget):
         self.table.verticalHeader().setVisible(False)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
+        self.table.setAlternatingRowColors(True)
+        self.table.setShowGrid(False)
+        self.table.verticalHeader().setDefaultSectionSize(30)
         lay.addWidget(self.table, 1)
 
         self.empty = QLabel("No finished matches yet. Press \"New match\" on the Live Tracker "

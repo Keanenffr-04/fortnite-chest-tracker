@@ -22,10 +22,10 @@ QMainWindow, QWidget#page, QStackedWidget { background: @BG@; }
 QWidget#sidebar { background: @PANEL@; border-right: 1px solid @BORDER@; }
 QLabel#appTitle { font-size: 13pt; font-weight: bold; color: @A1@; }
 QLabel#pageTitle { font-size: 18pt; font-weight: bold; }
-QLabel#sectionTitle { font-size: 11pt; font-weight: bold; color: @A1@; margin-top: 8px; }
+QLabel#sectionTitle { font-size: 11pt; font-weight: bold; color: @A1@; margin-top: 6px; }
 QLabel#muted, QLabel#hint, QLabel#cardLabel { color: @MUTED@; }
 QLabel#hint { font-size: 8.5pt; }
-QLabel#cardValue { font-size: 26pt; font-weight: bold; }
+QLabel#cardValue { font-size: 22pt; font-weight: bold; }
 QLabel#bigCount { font-size: 72pt; font-weight: bold; }
 QLabel#status { color: @A2@; font-weight: bold; }
 QLabel#problem { color: #ef4444; }
@@ -37,11 +37,13 @@ QPushButton:hover { border-color: @A1@; }
 QPushButton:disabled { color: @MUTED@; }
 QPushButton#primary { border: none; font-weight: bold;
   background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @A1@, stop:1 @A2@); }
+QPushButton#step { padding: 0px; font-size: 9pt; }
 QPushButton#danger { border: 1px solid #ef4444; color: #ef4444; }
 QPushButton#nav { text-align: left; border: none; border-radius: 8px; padding: 10px 14px; background: transparent; }
 QPushButton#nav:hover { background: @CARD@; }
 QPushButton#nav:checked { background: @CARD@; border-left: 3px solid @A1@; font-weight: bold; }
-QTableWidget, QListWidget { background: @CARD@; border: 1px solid @BORDER@; border-radius: 10px; gridline-color: @BORDER@; }
+QTableWidget, QListWidget { background: @CARD@; alternate-background-color: @PANEL@; border: 1px solid @BORDER@; border-radius: 10px; gridline-color: transparent; }
+QTableWidget::item { padding: 4px 8px; }
 QHeaderView::section { background: @PANEL@; border: none; padding: 6px; color: @MUTED@; }
 QCheckBox::indicator { width: 18px; height: 18px; border-radius: 4px; border: 1px solid @BORDER@; background: @CARD@; }
 QCheckBox::indicator:checked { background: @A1@; border-color: @A1@; }

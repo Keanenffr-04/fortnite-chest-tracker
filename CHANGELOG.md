@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.13
+- Added: **chests opened on a day** card at the top of the History page. Shows the chests and matches for the chosen day; arrows step back/forward one day, **Today** jumps back. It follows midnight by itself, and the match in progress counts as today (same rule as the Dashboard)
+- Changed (UI tidy, part 1 of 2): Dashboard + History tables have alternating rows, no grid lines and roomier rows; the Dashboard lists the last 5 matches (all of them are on History); smaller stat-card numbers so the page fits; the banner now says how to count manually. Spacing tightened
+- Added: `Database.totals_between()`, `day_bounds`, `day_totals`, `day_title`, `day_summary`; 5 new tests (the Qt pages are untested until run on Windows)
+- Only 2 changes. This was split from your 3-item request into 3 versions: v1.1.13 (this), v1.1.14 (UI tidy part 2: Live Tracker + Settings + overlay polish), v1.1.15 (pirate-token theme). Calibration/detection etc. moved by 3 (see ROADMAP)
+- Backlog now: match comparison, per-week chart, per-day table / calendar view, tooltips on every button, friend-friendly first-run tips
+
 ## v1.1.12
 - Added: personal-best highlight on the History page. Every match equal to your best gets a gold star and a bold gold chest count (ties all get it; a best of 0 is not highlighted). A footnote explains the star
 - Added: Dashboard chart toggle **Show per day / Show per match**. Per day = chests per local day for the last 14 days, today on the right; the match in progress counts as today. The caption changes with the view

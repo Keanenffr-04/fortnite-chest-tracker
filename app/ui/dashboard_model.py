@@ -6,14 +6,46 @@ from datetime import date, datetime, time as dtime, timedelta
 
 from app.overlay.model import format_timer
 
-DETECTION_BANNER = ("Counting is manual for now. The detection engine is built but not switched on yet: "
-                    "it needs your recorded samples to be tuned.")
+DETECTION_BANNER = ("Counting is manual for now: press +1 on the Live Tracker, in the overlay menu, "
+                    "or use your hotkeys. Automatic counting comes in a later version.")
 
 
 def day_start(now: float, days_back: int = 0) -> float:
     """Local midnight, days_back days before the day that contains `now`."""
     d = datetime.fromtimestamp(now).date() - timedelta(days=days_back)
     return datetime.combine(d, dtime.min).timestamp()
+
+
+def day_bounds(d: date) -> tuple[float, float]:
+    """Local midnight of `d` and of the next day."""
+    return (datetime.combine(d, dtime.min).timestamp(),
+            datetime.combine(d + timedelta(days=1), dtime.min).timestamp())
+
+
+def day_totals(db, counter, d: date, now: float | None = None) -> tuple[int, int]:
+    """(chests, matches) for local day `d`. The match in progress counts as today (only if it has chests,
+    the same rule used when matches are stored)."""
+    now = time.time() if now is None else now
+    chests, matches = db.totals_between(*day_bounds(d))
+    if d == datetime.fromtimestamp(now).date() and counter.match_count > 0:
+        chests += counter.match_count
+        matches += 1
+    return chests, matches
+
+
+def day_title(d: date, today: date) -> str:
+    """'Today', 'Yesterday' or e.g. 'Mon 16 Nov 2026'."""
+    if d == today:
+        return "Today"
+    if d == today - timedelta(days=1):
+        return "Yesterday"
+    return d.strftime("%a %d %b %Y")
+
+
+def day_summary(chests: int, matches: int) -> str:
+    if not matches:
+        return "No matches on this day"
+    return f"{matches} match{'es' if matches != 1 else ''}"
 
 
 def chart_values(db, counter, limit: int = 20) -> list[int]:
