@@ -35,6 +35,7 @@ def main() -> int:
     p.add_argument("--version", action="store_true")
     p.add_argument("--selftest", action="store_true")
     p.add_argument("--record", action="store_true", help="record chest samples with hotkeys")
+    p.add_argument("--overlay", action="store_true", help="show the live overlay (manual counting for now)")
     p.add_argument("--benchmark", action="store_true", help="measure screen capture speed")
     a = p.parse_args()
     if a.version:
@@ -44,13 +45,16 @@ def main() -> int:
     if a.record:
         from app.capture.tool import run_record
         return run_record()
+    if a.overlay:
+        from app.overlay.runner import run_overlay
+        return run_overlay()
     if a.benchmark:
         from app.capture.tool import run_benchmark
         return run_benchmark()
     print(f"Fortnite Chest Tracker {__version__}\n"
           "Chest detection, overlay and dashboard are NOT built yet (see ROADMAP.md).\n"
           "Run with --selftest to verify the core logic,\n"
-          "--benchmark to measure screen capture, --record to collect chest samples.")
+          "--overlay to show the overlay, --benchmark to measure capture, --record to collect samples.")
     return 0
 
 
