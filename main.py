@@ -34,14 +34,23 @@ def main() -> int:
     p = argparse.ArgumentParser(description="Fortnite Live Chest Tracker")
     p.add_argument("--version", action="store_true")
     p.add_argument("--selftest", action="store_true")
+    p.add_argument("--record", action="store_true", help="record chest samples with hotkeys")
+    p.add_argument("--benchmark", action="store_true", help="measure screen capture speed")
     a = p.parse_args()
     if a.version:
         print(__version__); return 0
     if a.selftest:
         return selftest()
+    if a.record:
+        from app.capture.tool import run_record
+        return run_record()
+    if a.benchmark:
+        from app.capture.tool import run_benchmark
+        return run_benchmark()
     print(f"Fortnite Chest Tracker {__version__}\n"
           "Chest detection, overlay and dashboard are NOT built yet (see ROADMAP.md).\n"
-          "Run with --selftest to verify the core logic.")
+          "Run with --selftest to verify the core logic,\n"
+          "--benchmark to measure screen capture, --record to collect chest samples.")
     return 0
 
 

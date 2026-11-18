@@ -1,2 +1,4 @@
-# v1.1.1 needs nothing beyond Python itself.
-# Packages get added here in the version that first uses them.
+numpy>=1.26
+opencv-python-headless>=4.9
+mss>=9.0
+keyboard>=0.13.5

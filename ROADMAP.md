@@ -11,6 +11,10 @@ Nothing here has been tested against real Fortnite yet.
 - [ ] Licence (waiting on you to choose)
 
 ## v1.1.2 - Screen capture + frame recorder (so you can give me real samples)
+- [x] Screen capture module (mss) - code written; NOT yet tested on a real screen
+- [x] Sample recorder with ring buffer + hotkeys (F8 chest / F9 negative / F10 stop) - logic unit-tested, hotkeys NOT yet tested on Windows
+- [x] Capture benchmark (`--benchmark`) - NOT yet run on your PC
+- [ ] YOU: run the benchmark and record real samples (see README)
 ## v1.1.3 - Detection engine v1 + debug view
 ## v1.1.4 - Event validation + replay tests
 ## v1.1.5 - Overlay

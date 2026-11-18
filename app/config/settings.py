@@ -24,6 +24,13 @@ class Settings:
     detection_cooldown_s: float = 1.5     # ignore repeat detections inside this window
     detection_interval_ms: int = 100      # capture/scan interval (10 fps default)
     sound_enabled: bool = True
+    # Capture / recording (v1.1.2)
+    capture_monitor: int = 1              # 1 = primary monitor
+    record_pre_s: float = 5.0             # seconds of footage kept BEFORE you press the mark key
+    record_post_s: float = 3.0            # seconds saved AFTER
+    hotkey_mark_chest: str = "f8"         # "a chest just opened"
+    hotkey_mark_negative: str = "f9"      # "nothing special" (helps cut false positives)
+    hotkey_stop_recording: str = "f10"
     # Overlay
     overlay_opacity: float = 0.85
     overlay_x: int = 20
@@ -43,6 +50,9 @@ class Settings:
         self.detection_sensitivity = min(1.0, max(0.0, float(self.detection_sensitivity)))
         self.detection_cooldown_s = max(0.0, float(self.detection_cooldown_s))
         self.detection_interval_ms = max(20, int(self.detection_interval_ms))
+        self.capture_monitor = max(1, int(self.capture_monitor))
+        self.record_pre_s = min(15.0, max(1.0, float(self.record_pre_s)))
+        self.record_post_s = min(15.0, max(0.5, float(self.record_post_s)))
         self.overlay_opacity = min(1.0, max(0.1, float(self.overlay_opacity)))
         self.overlay_scale = min(3.0, max(0.5, float(self.overlay_scale)))
 
