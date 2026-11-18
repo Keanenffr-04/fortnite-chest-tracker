@@ -1,4 +1,4 @@
-# Fortnite Live Chest Tracker - v1.1.3
+# Fortnite Live Chest Tracker - v1.1.4
 
 Counts chests you open in Fortnite and shows a live overlay. Local Windows app, works offline.
 
@@ -12,8 +12,17 @@ python -m pip install -r requirements.txt
 ```
 
 ## Try the overlay
-`python main.py --overlay` - drag it with the left mouse button, right-click for Add chest / Remove chest / New match / Quit.
-It counts manually for now. Automatic detection comes later.
+Double-click `run.bat` (installs missing packages the first time, then opens the overlay).
+Drag with the left mouse button; right-click for the menu. It counts manually for now.
+
+| Hotkey | Action |
+|---|---|
+| Ctrl+Shift+O | Hide / show overlay |
+| Ctrl+Shift+Up / Down | Add / remove a chest |
+| Ctrl+Shift+C | Click-through (LOCKED) on/off |
+| Ctrl+Shift+Q | Quit |
+
+Change them in `%APPDATA%\FortniteChestTracker\settings.json` (a UI comes later).
 
 ## Collect real chest samples (this is what v1.1.3 needs)
 1. Set Fortnite to Windowed Fullscreen, 1920x1080.

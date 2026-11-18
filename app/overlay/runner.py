@@ -7,6 +7,7 @@ import time
 from app.config.settings import Settings, app_data_dir
 from app.core.counter import ChestCounter
 from app.database.db import Database
+from app.overlay.hotkey_map import build_bindings
 from app.overlay.model import STATUS_MANUAL, clamp_position, scaled_size, snapshot
 
 
@@ -14,6 +15,7 @@ def run_overlay() -> int:
     try:
         from PySide6.QtCore import QTimer
         from PySide6.QtWidgets import QApplication
+        from app.overlay.hotkeys import HotkeyManager
         from app.overlay.window import OverlayWindow
     except ImportError:
         print("PySide6 is missing. Run: python -m pip install -r requirements.txt")
@@ -60,6 +62,44 @@ def run_overlay() -> int:
         counter.manual_adjust(-1)
         refresh()
 
+    def save_settings():
+        settings.save()
+
+    def toggle_visible():
+        win.setVisible(not win.isVisible())
+        settings.overlay_visible = win.isVisible()
+        save_settings()
+
+    def toggle_click_through():
+        settings.overlay_click_through = not win.locked
+        win.set_click_through(settings.overlay_click_through)
+        save_settings()
+
+    actions = {
+        "toggle_overlay": toggle_visible,
+        "add_chest": add,
+        "remove_chest": remove,
+        "toggle_click_through": toggle_click_through,
+        "quit": app.quit,
+    }
+
+    # ---- hotkeys ----
+    bindings, problems = build_bindings(settings)
+    hk = HotkeyManager()
+    hk.triggered.connect(lambda name: actions[name]())
+    hk.start(bindings, problems)
+    for line in hk.problems:
+        print(f"Hotkey problem: {line}")
+    # Never let the user get stuck: hide / lock are only offered when a hotkey can undo them.
+    can_unhide = hk.has("toggle_overlay")
+    can_unlock = hk.has("toggle_click_through")
+    win.hotkeys_active = can_unhide and can_unlock
+    if hk.active:
+        print("Hotkeys active: " + ", ".join(f"{a}={bindings[a]}" for a in hk.active))
+    app.aboutToQuit.connect(hk.stop)
+
+    win.hide_requested.connect(toggle_visible)
+    win.click_through_requested.connect(toggle_click_through)
     win.chest_added.connect(add)
     win.chest_removed.connect(remove)
     win.new_match_requested.connect(new_match)
@@ -72,5 +112,8 @@ def run_overlay() -> int:
     tick.start(1000)
 
     refresh()
-    win.show()
+    if settings.overlay_visible or not can_unhide:
+        win.show()
+    if settings.overlay_click_through and can_unlock:
+        win.set_click_through(True)
     return app.exec()

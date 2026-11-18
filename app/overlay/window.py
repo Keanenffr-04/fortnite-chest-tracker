@@ -26,6 +26,8 @@ class OverlayWindow(QWidget):
     new_match_requested = Signal()
     quit_requested = Signal()
     moved = Signal(int, int)
+    hide_requested = Signal()
+    click_through_requested = Signal()
 
     def __init__(self, scale: float = 1.0, opacity: float = 0.85):
         super().__init__()
@@ -36,6 +38,8 @@ class OverlayWindow(QWidget):
         self._scale = scale
         self._data = {"match": 0, "session": 0, "timer": "00:00", "status": STATUS_MANUAL}
         self._drag_offset = None
+        self.locked = False            # click-through on
+        self.hotkeys_active = False    # menu items for hide/lock only appear if hotkeys can undo them
         self.apply_appearance(scale, opacity)
 
     def apply_appearance(self, scale: float, opacity: float) -> None:
@@ -43,6 +47,16 @@ class OverlayWindow(QWidget):
         w, h = scaled_size(scale)
         self.setFixedSize(w, h)
         self.setWindowOpacity(min(1.0, max(0.1, opacity)))
+        self.update()
+
+    def set_click_through(self, on: bool) -> None:
+        """Mouse clicks pass through the overlay to the game. Changing the flag hides the window in Qt,
+        so show it again if it was visible."""
+        was_visible = self.isVisible()
+        self.locked = on
+        self.setWindowFlag(Qt.WindowType.WindowTransparentForInput, on)
+        if was_visible:
+            self.show()
         self.update()
 
     def set_snapshot(self, data: dict) -> None:
@@ -91,6 +105,10 @@ class OverlayWindow(QWidget):
         p.drawText(QRectF(pad, h - 34 * k, w / 2, 22 * k), left, f"SESSION  {self._data['session']}")
         p.setPen(BLUE)
         p.drawText(QRectF(w / 2, h - 34 * k, w / 2 - pad, 22 * k), right, self._data["timer"])
+        if self.locked:
+            p.setFont(self._font(7, True, k))
+            p.setPen(PURPLE)
+            p.drawText(QRectF(0, h - 34 * k, w, 22 * k), Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter, "LOCKED")
         p.end()
 
     @staticmethod
@@ -120,6 +138,10 @@ class OverlayWindow(QWidget):
         menu.addAction("Remove chest (-1)", self.chest_removed.emit)
         menu.addSeparator()
         menu.addAction("New match", self.new_match_requested.emit)
+        if self.hotkeys_active:
+            menu.addSeparator()
+            menu.addAction("Hide overlay", self.hide_requested.emit)
+            menu.addAction("Click-through (lock)", self.click_through_requested.emit)
         menu.addSeparator()
         menu.addAction("Quit", self.quit_requested.emit)
         menu.exec(e.globalPos())

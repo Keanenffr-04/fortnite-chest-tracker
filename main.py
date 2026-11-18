@@ -52,7 +52,7 @@ def main() -> int:
         from app.capture.tool import run_benchmark
         return run_benchmark()
     print(f"Fortnite Chest Tracker {__version__}\n"
-          "Chest detection, overlay and dashboard are NOT built yet (see ROADMAP.md).\n"
+          "Chest detection and the dashboard are NOT built yet (see ROADMAP.md).\n"
           "Run with --selftest to verify the core logic,\n"
           "--overlay to show the overlay, --benchmark to measure capture, --record to collect samples.")
     return 0

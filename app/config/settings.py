@@ -42,6 +42,8 @@ class Settings:
     hotkey_toggle_overlay: str = "ctrl+shift+o"
     hotkey_add_chest: str = "ctrl+shift+up"
     hotkey_remove_chest: str = "ctrl+shift+down"
+    hotkey_toggle_click_through: str = "ctrl+shift+c"
+    hotkey_quit: str = "ctrl+shift+q"
     # App
     start_with_windows: bool = False
     data_dir: str = field(default_factory=lambda: str(app_data_dir()))
