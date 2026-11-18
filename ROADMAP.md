@@ -4,7 +4,7 @@
 "Written, not run" means the code exists but has never run on a real PC / real Fortnite.
 Nothing here has been tested against real Fortnite yet.
 
-Versioning: v1.1.1 -> v1.1.10, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
+Versioning: v1.1.1 -> v1.1.11, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
 
 # MILESTONE 1 - Working tracker for you (v1.1.x)
 
@@ -14,7 +14,7 @@ Versioning: v1.1.1 -> v1.1.10, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 
 ## v1.1.2 - Screen capture + sample recorder  [done]
 - [x] Capture, recorder, `--benchmark` (run on your PC: 45.5 ms grab, 17.6 fps max)
-- [ ] YOU: record real chest samples (needed for v1.1.8)
+- [ ] YOU: record real chest samples (needed for v1.1.9)
 
 ## v1.1.3 - Overlay (basic)  [done, written not run]
 - [x] Frameless always-on-top overlay, draggable, manual counting
@@ -30,7 +30,7 @@ Versioning: v1.1.1 -> v1.1.10, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [x] Option validation, old settings files still load - unit-tested
 - [ ] YOU: check the menu works and the sound plays (needs Windows)
 
-## v1.1.6 - Dashboard + Live Tracker page + Settings page  [this release, written not run]
+## v1.1.6 - Dashboard + Live Tracker page + Settings page  [done, written not run]
 - [x] Main window (`--app`), dark theme, purple/blue cards - theme colour follows the overlay theme
 - [x] Dashboard: stat cards + recent matches
 - [x] Live Tracker: counter, status, recent events, manual correction, show/hide overlay
@@ -38,18 +38,22 @@ Versioning: v1.1.1 -> v1.1.10, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [ ] YOU: run `run.bat`; check all three pages look right, Apply works, the overlay follows setting changes
 - [ ] YOU: tick "Start with Windows", reboot/sign out, check the overlay appears; untick and check it stops
 - [ ] YOU: change a hotkey in Settings and check the new one works in Fortnite (and the old one stops)
-## v1.1.7 - Statistics, charts, match history, CSV export button
+## v1.1.7 - Stream button  [this release, written not run]
+- [x] Overlay stays hidden when the app opens; **Start stream** / **Stop stream** button in the sidebar shows / hides it
+- [x] Hotkey and overlay-menu hide/show stay in sync with the button - controller logic unit-tested
+- [ ] YOU: run `run.bat`; check the overlay is hidden at start, Start stream shows it, Stop stream hides it, Ctrl+Shift+O keeps the button label right
+## v1.1.8 - Statistics, charts, match history, CSV export button
 - [ ] Totals, averages, personal best, daily/weekly, match comparison
 - [ ] Charts, match history table, export button
-## v1.1.8 - Detection engine v1 + calibration (NEEDS your real samples)
+## v1.1.9 - Detection engine v1 + calibration (NEEDS your real samples)
 - [ ] Region (ROI) detector using your reference frames, confidence score
 - [ ] Detection debug view
 - [ ] Calibration screen: confirm resolution + watch region (basis for friends' setups)
-## v1.1.9 - Event validation, replay tests, auto match detection
+## v1.1.10 - Event validation, replay tests, auto match detection
 - [ ] Event state machine (prompt -> hold -> open) to cut false positives
 - [ ] Replay tests from recorded frames, accuracy numbers
 - [ ] Auto match start/reset (experimental, needs samples)
-## v1.1.10 - Packaging + logging
+## v1.1.11 - Packaging + logging
 - [ ] `.exe` build, release ZIP
 - [ ] Log file + "open logs" button (so a friend can send you a crash report)
 - [ ] Real-gameplay test guide
@@ -81,6 +85,9 @@ Versioning: v1.1.1 -> v1.1.10, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [ ] Friends leaderboard: start with exporting a file and comparing; a server only if wanted (needs consent + privacy care)
 - [ ] Evaluate Windows RegisterHotKey instead of the `keyboard` global hook (lighter footprint)
 
+# Backlog (ideas waiting for a version - rule: max 2 changes per version, the rest lands here)
+Nothing parked yet. Add new ideas here instead of building them straight away.
+
 # Before sharing with friends (checklist)
 - [ ] Choose a licence (I will not pick one without asking)
 - [ ] Read Epic's current anti-cheat / third-party-tool policy. We never read memory or inject code, but no overlay or global key hook is guaranteed safe. Tell friends the risk.
@@ -88,6 +95,6 @@ Versioning: v1.1.1 -> v1.1.10, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [ ] Test on at least one other PC with different resolution/GPU
 
 # Known limits
-- No chest detection exists until v1.1.8, and it needs real Fortnite samples from you.
+- No chest detection exists until v1.1.9, and it needs real Fortnite samples from you.
 - The overlay is manual-count only until then.
 - Fortnite should run in Windowed Fullscreen for the overlay to show.

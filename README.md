@@ -1,11 +1,12 @@
-# Fortnite Live Chest Tracker - v1.1.6
+# Fortnite Live Chest Tracker - v1.1.7
 
 Counts chests you open in Fortnite and shows a live overlay. Local Windows app, works offline.
 
 ## Status
 Automatic chest detection is NOT built yet: you count manually (hotkeys, overlay menu or the Live Tracker page).
-v1.1.6 adds the main window with Dashboard, Live Tracker and Settings pages. Charts and full history come in v1.1.7,
-detection in v1.1.8. Nothing has been tested on real Fortnite yet. See ROADMAP.md.
+v1.1.7: the overlay (the small box) no longer pops up on its own. Press **Start stream** in the main window's
+sidebar to show it, **Stop stream** to hide it. Charts and full history come in v1.1.8,
+detection in v1.1.9. Nothing has been tested on real Fortnite yet. See ROADMAP.md.
 
 ## Install
 ```powershell
@@ -13,8 +14,9 @@ python -m pip install -r requirements.txt
 ```
 
 ## Try the app
-Double-click `run.bat` (installs missing packages the first time, then opens the main window + overlay).
-Closing the main window quits the tracker. `python main.py --overlay` starts just the overlay.
+Double-click `run.bat` (installs missing packages the first time, then opens the main window). The overlay stays
+hidden until you press **Start stream**.
+Closing the main window quits the tracker. `python main.py --overlay` starts just the overlay (it shows straight away, as there is no window to press a button in).
 
 Overlay: drag with the left mouse button; right-click for the menu: add/remove chest, new match, opacity,
 size, theme, what to show, sound on/off. It counts manually for now (a rising chime = counted).
@@ -28,7 +30,7 @@ size, theme, what to show, sound on/off. It counts manually for now (a rising ch
 
 Change them on the Settings page (empty = disabled; they need ctrl/alt/shift so they don't fire while you play).
 
-## Collect real chest samples (this is what v1.1.8 needs)
+## Collect real chest samples (this is what v1.1.9 needs)
 1. Set Fortnite to Windowed Fullscreen, 1920x1080.
 2. `python main.py --benchmark` and send me the output (checks capture speed).
 3. `python main.py --record`, then start a match.

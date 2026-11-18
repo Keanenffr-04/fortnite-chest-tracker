@@ -62,7 +62,7 @@ def test_hotkey_rules_enforced():
 
 
 def test_coerce_kinds():
-    assert coerce(FIELDS["overlay_visible"], 1) is True
+    assert coerce(FIELDS["overlay_click_through"], 1) is True
     assert coerce(FIELDS["detection_interval_ms"], "50") == 50
     assert coerce(FIELDS["overlay_scale"], "1.5") == 1.5
 

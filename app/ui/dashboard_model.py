@@ -5,7 +5,7 @@ import time
 
 from app.overlay.model import format_timer
 
-DETECTION_BANNER = ("Counting is manual for now. Automatic chest detection arrives in v1.1.8 "
+DETECTION_BANNER = ("Counting is manual for now. Automatic chest detection arrives in v1.1.9 "
                     "and needs your recorded samples.")
 
 

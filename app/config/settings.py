@@ -41,7 +41,6 @@ class Settings:
     overlay_y: int = 20
     overlay_scale: float = 1.0
     overlay_click_through: bool = False
-    overlay_visible: bool = True
     overlay_theme: str = "violet"
     overlay_show_session: bool = True
     overlay_show_timer: bool = True

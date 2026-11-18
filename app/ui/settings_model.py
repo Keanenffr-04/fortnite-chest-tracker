@@ -27,7 +27,6 @@ _HK = "Empty = disabled. Needs ctrl/alt/shift, e.g. ctrl+shift+o"
 
 SECTIONS: tuple[tuple[str, tuple[Field, ...]], ...] = (
     ("Overlay", (
-        Field("overlay_visible", "Show overlay", "bool"),
         Field("overlay_click_through", "Click-through (LOCKED)", "bool",
               hint="Mouse clicks pass through to the game. Undo with its hotkey or here."),
         Field("overlay_opacity", "Opacity", "percent", 0.1, 1.0),
@@ -46,7 +45,7 @@ SECTIONS: tuple[tuple[str, tuple[Field, ...]], ...] = (
     )),
     ("Detection", (
         Field("detection_sensitivity", "Sensitivity", "percent", 0.0, 1.0,
-              hint="Minimum confidence to count. Detection itself arrives in v1.1.8."),
+              hint="Minimum confidence to count. Detection itself arrives in v1.1.9."),
         Field("detection_cooldown_s", "Cooldown (seconds)", "float", 0.0, 10.0, 0.1,
               hint="Ignore repeat detections inside this window."),
         Field("detection_interval_ms", "Scan interval (ms)", "int", 20, 1000, 10),

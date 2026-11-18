@@ -6,6 +6,7 @@ Listeners are called as listener(kind) with kind one of:
   "count"     - a chest was added / removed
   "match"     - a match was finished and a new one started
   "settings"  - a setting changed (apply_changes, overlay menu, hotkey toggles, reset)
+  "stream"    - the overlay was shown / hidden (Start stream button, hotkey, overlay menu)
   "reset"     - saved statistics were deleted
 """
 from __future__ import annotations
@@ -25,13 +26,17 @@ from app.ui.settings_model import apply_changes, defaults_keeping
 
 class TrackerController:
     def __init__(self, settings: Settings, db, sound, settings_path: Path | None = None,
-                 startup_setter: Callable[[bool], str | None] = startup.set_enabled):
+                 startup_setter: Callable[[bool], str | None] = startup.set_enabled,
+                 overlay_visible: bool = True):
         self.settings = settings
         self.db = db
         self.sound = sound
         self.settings_path = settings_path
         self._startup_setter = startup_setter
-        self.status = STATUS_MANUAL      # a detector (v1.1.8) will change this
+        # Whether the overlay (the small box) is showing. NOT saved: the main window starts with it
+        # hidden and you press Start stream to show it.
+        self.overlay_visible = bool(overlay_visible)
+        self.status = STATUS_MANUAL      # a detector (v1.1.9) will change this
         self.counter = ChestCounter(settings.detection_sensitivity, settings.detection_cooldown_s)
         self.session_id = db.start_session(time.time())
         self._listeners: list[Callable[[str], None]] = []
@@ -135,9 +140,8 @@ class TrackerController:
         return warnings
 
     def set_overlay_visible(self, visible: bool) -> None:
-        self.settings.overlay_visible = bool(visible)
-        self._save()
-        self.notify("settings")
+        self.overlay_visible = bool(visible)
+        self.notify("stream")
 
     def set_click_through(self, on: bool) -> None:
         self.settings.overlay_click_through = bool(on)

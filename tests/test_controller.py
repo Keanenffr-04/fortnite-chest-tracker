@@ -129,10 +129,27 @@ def test_visibility_click_through_position_persist(tmp_path):
     c, _, _ = make(tmp_path)
     kinds = []
     c.subscribe(kinds.append)
-    c.set_overlay_visible(False); c.set_click_through(True); c.set_overlay_position(5, 6)
+    c.set_click_through(True); c.set_overlay_position(5, 6)
     s = Settings.load(tmp_path / "s.json")
-    assert (s.overlay_visible, s.overlay_click_through, s.overlay_x, s.overlay_y) == (False, True, 5, 6)
-    assert kinds == ["settings", "settings"]     # position does not notify
+    assert (s.overlay_click_through, s.overlay_x, s.overlay_y) == (True, 5, 6)
+    assert kinds == ["settings"]                 # position does not notify
+
+
+def test_overlay_starts_hidden_until_stream_pressed_and_is_not_saved(tmp_path):
+    c = TrackerController(Settings(), Database(tmp_path / "x.db"), SoundPlayer(tmp_path / "snd", False, player=None),
+                          settings_path=tmp_path / "s.json", startup_setter=lambda on: None,
+                          overlay_visible=False)
+    kinds = []
+    c.subscribe(kinds.append)
+    assert c.overlay_visible is False
+    c.set_overlay_visible(True)
+    assert c.overlay_visible is True and kinds == ["stream"]
+    assert not (tmp_path / "s.json").exists()    # streaming is per run, never written to settings
+
+
+def test_overlay_visible_by_default(tmp_path):
+    c, _, _ = make(tmp_path)
+    assert c.overlay_visible is True             # overlay-only / start-with-Windows mode
 
 
 def test_reset_statistics_keeps_live_match(tmp_path):

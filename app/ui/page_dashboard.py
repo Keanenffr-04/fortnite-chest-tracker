@@ -1,4 +1,4 @@
-"""Dashboard page: stat cards + recent matches. (Charts and full history come in v1.1.7.)"""
+"""Dashboard page: stat cards + recent matches. (Charts and full history come in v1.1.8.)"""
 from __future__ import annotations
 
 from PySide6.QtCore import Qt

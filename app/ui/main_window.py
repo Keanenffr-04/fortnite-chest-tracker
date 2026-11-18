@@ -59,6 +59,13 @@ class MainWindow(QMainWindow):
             group.addButton(btn)
             sl.addWidget(btn)
         sl.addStretch(1)
+        self.btn_stream = QPushButton()
+        self.btn_stream.setMinimumHeight(40)
+        self.btn_stream.clicked.connect(
+            lambda: controller.set_overlay_visible(not controller.overlay_visible))
+        sl.addWidget(self.btn_stream)
+        self.refresh_stream_button()
+        sl.addSpacing(8)
         note = QLabel("Closing this window\nquits the tracker.")
         note.setObjectName("hint")
         sl.addWidget(note)
@@ -67,6 +74,13 @@ class MainWindow(QMainWindow):
         row.addWidget(self.stack, 1)
         self.setCentralWidget(root)
         controller.subscribe(self.on_change)
+
+    def refresh_stream_button(self) -> None:
+        on = self.ctl.overlay_visible
+        self.btn_stream.setText("Stop stream" if on else "Start stream")
+        self.btn_stream.setObjectName("danger" if on else "primary")
+        self.btn_stream.style().unpolish(self.btn_stream)     # re-apply the style sheet for the new id
+        self.btn_stream.style().polish(self.btn_stream)
 
     def show_page(self, index: int) -> None:
         self.stack.setCurrentIndex(index)
@@ -77,6 +91,9 @@ class MainWindow(QMainWindow):
             self.live.refresh(rebuild_events=True)
 
     def on_change(self, kind: str) -> None:
+        if kind == "stream":
+            self.refresh_stream_button()
+            return
         if kind == "settings":
             self.setStyleSheet(stylesheet(self.ctl.settings.overlay_theme))
             self.settings_page.load(self.ctl.settings)

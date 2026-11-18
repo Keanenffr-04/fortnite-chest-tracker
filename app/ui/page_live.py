@@ -49,8 +49,7 @@ class LivePage(QWidget):
         self.btn_add.setObjectName("primary")
         self.btn_remove = QPushButton("-1 Chest")
         self.btn_new = QPushButton("New match")
-        self.btn_overlay = QPushButton("Hide overlay")
-        for b in (self.btn_add, self.btn_remove, self.btn_new, self.btn_overlay):
+        for b in (self.btn_add, self.btn_remove, self.btn_new):
             b.setMinimumHeight(38)
             row.addWidget(b)
         lay.addLayout(row)
@@ -64,8 +63,6 @@ class LivePage(QWidget):
         self.btn_add.clicked.connect(self.ctl.add)
         self.btn_remove.clicked.connect(self.ctl.remove)
         self.btn_new.clicked.connect(self.ctl.new_match)
-        self.btn_overlay.clicked.connect(
-            lambda: self.ctl.set_overlay_visible(not self.ctl.settings.overlay_visible))
         self.refresh(rebuild_events=True)
 
     def refresh(self, rebuild_events: bool = False) -> None:
@@ -74,7 +71,6 @@ class LivePage(QWidget):
         self.session.setText(f"Session total: {c.session_count}")
         self.timer.setText(f"Match time  {format_timer(c.match_elapsed())}")
         self.status.setText(self.ctl.status)
-        self.btn_overlay.setText("Hide overlay" if self.ctl.settings.overlay_visible else "Show overlay")
         if rebuild_events:
             self.events.clear()
             lines = recent_event_lines(self.ctl.recent_events())

@@ -34,7 +34,8 @@ def run_overlay(with_window: bool = False) -> int:
     app.setStyle("Fusion")          # consistent look so the dark style sheet applies everywhere
     db = Database(app_data_dir() / "chests.db")
     sound = SoundPlayer(app_data_dir() / "sounds", settings.sound_enabled, settings.sound_volume)
-    ctl = TrackerController(settings, db, sound)
+    # With the main window the overlay stays hidden until you press Start stream.
+    ctl = TrackerController(settings, db, sound, overlay_visible=not with_window)
 
     win = OverlayWindow(options_from_settings(settings))
     screen = app.primaryScreen().availableGeometry()
@@ -84,7 +85,7 @@ def run_overlay(with_window: bool = False) -> int:
         win.apply_options(options_from_settings(settings))
         place()
         undoable = with_window or state["can_unhide"]
-        want_visible = settings.overlay_visible or not undoable    # never leave it hidden for good
+        want_visible = ctl.overlay_visible or not undoable    # never leave it hidden for good
         if win.isVisible() != want_visible:
             win.setVisible(want_visible)
         want_lock = settings.overlay_click_through and (with_window or state["can_unlock"])
@@ -94,6 +95,8 @@ def run_overlay(with_window: bool = False) -> int:
     def on_change(kind: str):
         if kind == "settings":
             start_hotkeys(reload=True)
+            sync_overlay()
+        elif kind == "stream":
             sync_overlay()
         refresh()
 
