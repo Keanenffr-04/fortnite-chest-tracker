@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.8
+- Added: **History** page (sidebar, between Live Tracker and Settings) listing every finished match, newest first, with a one-line total
+- Added: **Export CSV** button on the History page. Pick where to save (suggested name `chest_matches_<date>.csv`); you get a message with the number of matches saved, or the reason if it failed. The match in progress is not exported until you press New match
+- Parked in the Backlog (kept to 2 changes): charts, daily/weekly totals, match comparison
+- Tests: 85 total (5 new). The Qt page and the save dialog are untested until run on Windows
+
 ## v1.1.7
 - Changed: the overlay no longer appears when the main window opens. Press **Start stream** (sidebar, visible on every page) to show it; the button becomes **Stop stream** to hide it. The Ctrl+Shift+O hotkey and the overlay's right-click "Hide overlay" do the same thing and keep the button in step
 - Changed: "Start stream" is per run and not saved, so the main window always opens with the overlay hidden. `--overlay` (and start with Windows) still shows the overlay immediately

@@ -85,6 +85,10 @@ class Database:
         return self.conn.execute(
             "SELECT * FROM matches ORDER BY started_at DESC LIMIT ?", (limit,)).fetchall()
 
+    def all_matches(self) -> list[sqlite3.Row]:
+        """Every finished match, newest first (the History page)."""
+        return self.conn.execute("SELECT * FROM matches ORDER BY started_at DESC, id DESC").fetchall()
+
     def reset_statistics(self) -> None:
         with self.conn:
             self.conn.execute("DELETE FROM chest_events")

@@ -1,12 +1,12 @@
-# Fortnite Live Chest Tracker - v1.1.7
+# Fortnite Live Chest Tracker - v1.1.8
 
 Counts chests you open in Fortnite and shows a live overlay. Local Windows app, works offline.
 
 ## Status
 Automatic chest detection is NOT built yet: you count manually (hotkeys, overlay menu or the Live Tracker page).
 v1.1.7: the overlay (the small box) no longer pops up on its own. Press **Start stream** in the main window's
-sidebar to show it, **Stop stream** to hide it. Charts and full history come in v1.1.8,
-detection in v1.1.9. Nothing has been tested on real Fortnite yet. See ROADMAP.md.
+sidebar to show it, **Stop stream** to hide it. v1.1.8 adds a History page with an Export CSV button.
+Charts are in the backlog; detection comes in v1.1.9. Nothing has been tested on real Fortnite yet. See ROADMAP.md.
 
 ## Install
 ```powershell

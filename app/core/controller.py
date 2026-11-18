@@ -80,6 +80,14 @@ class TrackerController:
             return self.db.save_match(summary, self.session_id)
         return None
 
+    def export_matches(self, path) -> tuple[int, str | None]:
+        """Write finished matches to a CSV file. Returns (rows written, error text or None).
+        The match in progress is not included (press New match first to save it)."""
+        try:
+            return self.db.export_matches_csv(path), None
+        except OSError as e:
+            return 0, f"Could not write the file: {e}"
+
     def recent_events(self):
         return list(self.counter.events)
 

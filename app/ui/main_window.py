@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (QButtonGroup, QHBoxLayout, QLabel, QMainWindow, Q
 
 from app import APP_NAME, __version__
 from app.ui.page_dashboard import DashboardPage
+from app.ui.page_history import HistoryPage
 from app.ui.page_live import LivePage
 from app.ui.page_settings import SettingsPage
 from app.ui.theme import stylesheet
@@ -44,11 +45,13 @@ class MainWindow(QMainWindow):
         self.stack = QStackedWidget()
         self.dashboard = DashboardPage(controller)
         self.live = LivePage(controller)
+        self.history = HistoryPage(controller)
         self.settings_page = SettingsPage(controller)
         group = QButtonGroup(self)
         group.setExclusive(True)
         for i, (name, page) in enumerate((("Dashboard", self.dashboard),
                                           ("Live Tracker", self.live),
+                                          ("History", self.history),
                                           ("Settings", self.settings_page))):
             self.stack.addWidget(page)
             btn = QPushButton(name)
@@ -89,6 +92,8 @@ class MainWindow(QMainWindow):
             self.dashboard.on_change("match")       # cards + history table
         elif index == 1:
             self.live.refresh(rebuild_events=True)
+        elif index == 2:
+            self.history.refresh()
 
     def on_change(self, kind: str) -> None:
         if kind == "stream":
@@ -101,6 +106,8 @@ class MainWindow(QMainWindow):
         current = self.stack.currentWidget()
         if current is self.dashboard or kind in ("match", "reset"):
             self.dashboard.on_change(kind)
+        if current is self.history or kind in ("match", "reset"):
+            self.history.on_change(kind)
         if current is self.live or kind in ("count", "match", "reset", "settings"):
             self.live.on_change(kind)
 

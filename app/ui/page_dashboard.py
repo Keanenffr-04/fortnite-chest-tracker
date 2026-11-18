@@ -1,4 +1,4 @@
-"""Dashboard page: stat cards + recent matches. (Charts and full history come in v1.1.8.)"""
+"""Dashboard page: stat cards + recent matches. (Full history + CSV export: History page. Charts are in the backlog.)"""
 from __future__ import annotations
 
 from PySide6.QtCore import Qt

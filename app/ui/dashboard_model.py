@@ -55,6 +55,20 @@ def recent_event_lines(events, limit: int = 30) -> list[str]:
     return [format_event(e) for e in reversed(events[-limit:])]
 
 
+def export_filename(ts: float) -> str:
+    """Suggested name for the CSV export, e.g. chest_matches_2026-11-18.csv"""
+    return time.strftime("chest_matches_%Y-%m-%d.csv", time.localtime(ts))
+
+
+def history_summary(rows) -> str:
+    """One line above the History table."""
+    n = len(rows)
+    if not n:
+        return "No finished matches yet."
+    total = sum(r["chests"] for r in rows)
+    return f"{n} match{'es' if n != 1 else ''}, {total} chest{'s' if total != 1 else ''} in total"
+
+
 def format_match_row(row) -> tuple[str, str, str]:
     """(date, duration, chests) for the match history table."""
     date = time.strftime("%d %b %H:%M", time.localtime(row["started_at"]))

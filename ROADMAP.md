@@ -38,13 +38,14 @@ Versioning: v1.1.1 -> v1.1.11, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [ ] YOU: run `run.bat`; check all three pages look right, Apply works, the overlay follows setting changes
 - [ ] YOU: tick "Start with Windows", reboot/sign out, check the overlay appears; untick and check it stops
 - [ ] YOU: change a hotkey in Settings and check the new one works in Fortnite (and the old one stops)
-## v1.1.7 - Stream button  [this release, written not run]
+## v1.1.7 - Stream button  [done, written not run]
 - [x] Overlay stays hidden when the app opens; **Start stream** / **Stop stream** button in the sidebar shows / hides it
 - [x] Hotkey and overlay-menu hide/show stay in sync with the button - controller logic unit-tested
 - [ ] YOU: run `run.bat`; check the overlay is hidden at start, Start stream shows it, Stop stream hides it, Ctrl+Shift+O keeps the button label right
-## v1.1.8 - Statistics, charts, match history, CSV export button
-- [ ] Totals, averages, personal best, daily/weekly, match comparison
-- [ ] Charts, match history table, export button
+## v1.1.8 - Match history + CSV export  [this release, written not run]
+- [x] History page: every finished match, newest first
+- [x] Export CSV button (save dialog, success/error message) - export logic unit-tested
+- [ ] YOU: finish a couple of matches, open History, check they are listed; press Export CSV and open the file in Excel
 ## v1.1.9 - Detection engine v1 + calibration (NEEDS your real samples)
 - [ ] Region (ROI) detector using your reference frames, confidence score
 - [ ] Detection debug view
@@ -86,7 +87,10 @@ Versioning: v1.1.1 -> v1.1.11, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [ ] Evaluate Windows RegisterHotKey instead of the `keyboard` global hook (lighter footprint)
 
 # Backlog (ideas waiting for a version - rule: max 2 changes per version, the rest lands here)
-Nothing parked yet. Add new ideas here instead of building them straight away.
+- Charts (chests per match, over time)
+- Totals: daily / weekly, personal-best highlights
+- Match comparison
+(Moved here from the old v1.1.8 so each version stays at 2 changes. Add new ideas below.)
 
 # Before sharing with friends (checklist)
 - [ ] Choose a licence (I will not pick one without asking)
