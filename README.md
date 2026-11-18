@@ -1,4 +1,4 @@
-# Fortnite Live Chest Tracker - v1.1.10
+# Fortnite Live Chest Tracker - v1.1.12
 
 Counts chests you open in Fortnite and shows a live overlay. Local Windows app, works offline.
 
@@ -6,7 +6,7 @@ Counts chests you open in Fortnite and shows a live overlay. Local Windows app, 
 Automatic chest detection is NOT built yet: you count manually (hotkeys, overlay menu or the Live Tracker page).
 v1.1.7: the overlay (the small box) no longer pops up on its own. Press **Start stream** in the main window's
 sidebar to show it, **Stop stream** to hide it. v1.1.8 added a History page with an Export CSV button; v1.1.9 added a chests-per-match chart and Today / Last 7 days
-cards to the Dashboard. v1.1.10 adds the detection engine and a debug tool (command line only, not wired into the live counter yet).
+cards to the Dashboard. v1.1.10 adds the detection engine and a debug tool (command line only, not wired into the live counter yet). v1.1.11 replaces `run.bat` with a double-click `FortniteChestTracker.pyw`. v1.1.12: your personal-best matches get a gold star on the History page, and the Dashboard chart can switch between per match and per day.
 Nothing has been tested on real Fortnite yet. See ROADMAP.md.
 
 ## Install
@@ -15,7 +15,7 @@ python -m pip install -r requirements.txt
 ```
 
 ## Try the app
-Double-click `run.bat` (installs missing packages the first time, then opens the main window). The overlay stays
+Double-click `FortniteChestTracker.pyw` (no black console window; installs missing packages the first time, then opens the main window; errors show in a message box). The overlay stays
 hidden until you press **Start stream**.
 Closing the main window quits the tracker. `python main.py --overlay` starts just the overlay (it shows straight away, as there is no window to press a button in).
 
@@ -53,7 +53,8 @@ The watch region is `detection_roi_x/y/w/h` in `settings.json` (default is a pla
 screen in v1.1.11 will set it for you). The live counter does not use the detector yet.
 
 ## Run
-Install Python 3.10+ (tick "Add Python to PATH"), then double-click `run.bat`.
+Install Python 3.10+ (tick "Add Python to PATH"), then double-click `FortniteChestTracker.pyw`.
+If double-click does nothing, right-click it > Open with > Python (pythonw). The command-line tools (`--record`, `--detect-debug`, ...) are still run as `python main.py ...`.
 Self-test: `python main.py --selftest`   Tests: `python -m pytest -q`
 
 ## Put it on GitHub (when you're ready)

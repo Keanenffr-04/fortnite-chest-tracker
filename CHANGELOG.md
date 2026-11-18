@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.1.12
+- Added: personal-best highlight on the History page. Every match equal to your best gets a gold star and a bold gold chest count (ties all get it; a best of 0 is not highlighted). A footnote explains the star
+- Added: Dashboard chart toggle **Show per day / Show per match**. Per day = chests per local day for the last 14 days, today on the right; the match in progress counts as today. The caption changes with the view
+- Added: `Database.matches_since()`, `daily_values`, `best_flags`, `chests_label`; 2 new tests, 118 total (the Qt pages are untested until run on Windows)
+- Both taken from the Backlog (calibration + detection need your real samples, which have not arrived). Moved: calibration + switching detection on to v1.1.13; event validation + replay tests v1.1.14; auto match + logging v1.1.15; packaging v1.1.16
+- Backlog now: match comparison, per-week chart
+
+## v1.1.11
+- Changed: `run.bat` is gone. Double-click `FortniteChestTracker.pyw` instead: no black console window, installs missing packages the first time (a message tells you to wait), opens the main window. Errors and crashes show in a message box instead of a window that closes. Passing options still works (`pythonw FortniteChestTracker.pyw --overlay`); the start-with-Windows entry is unchanged
+- Added: `app/core/launcher.py` (the logic, so it is testable) and 6 tests (116 total, new ones on fakes only). The real double-click, the pip install and the message boxes are untested until run on Windows
+- Only 1 change this version (the 2nd slot was left free). Moved: calibration + switching detection on to v1.1.12; event validation + replay tests v1.1.13; auto match + logging v1.1.14; packaging v1.1.15
+- Backlog unchanged
+
 ## v1.1.10
 - Added: detection engine v1 (`app/detect`): template matching inside a watch region (ROI, stored as screen fractions so it does not depend on resolution). Gives a confidence 0-1 per frame and the position of the best match. Templates are scaled if the frame width differs from the one they were cut from (basic only; proper resolution support is v1.2.2). Flat or too-big templates are skipped with a reason
 - Added: detection debug view, command line: `--make-template` cuts a template out of a sample frame, `--detect-debug <folder>` runs the detector over recorded samples, prints confidence per frame, says DETECTED / MISSED / FALSE ALARM per sample and saves annotated pictures

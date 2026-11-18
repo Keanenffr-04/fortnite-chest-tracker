@@ -2,7 +2,7 @@ from datetime import datetime
 
 from app.core.counter import ChestCounter
 from app.database.db import Database
-from app.ui.dashboard_model import bar_fractions, chart_values, day_start, overall_stats
+from app.ui.dashboard_model import bar_fractions, chart_values, daily_values, day_start, overall_stats
 
 NOON = datetime(2026, 11, 18, 12, 0).timestamp()
 
@@ -59,3 +59,13 @@ def test_bar_fractions():
     assert bar_fractions([2, 4, 0]) == [0.5, 1.0, 0.0]
     assert bar_fractions([0, 0]) == [0.0, 0.0]
     assert bar_fractions([]) == []
+
+
+def test_daily_values_group_by_local_day_and_include_live():
+    db = Database(":memory:")
+    db.save_match(match(at(18, 9), 2)); db.save_match(match(at(18, 20), 3))     # today: 5
+    db.save_match(match(at(17, 23), 4))                                         # yesterday
+    db.save_match(match(at(1, 12), 9))                                          # 17 days ago: outside 14
+    v = daily_values(db, live(1), days=14, now=NOON)
+    assert len(v) == 14 and v[-1] == 6 and v[-2] == 4 and sum(v) == 10          # live match counts as today
+    assert daily_values(Database(":memory:"), live(0), days=3, now=NOON) == [0, 0, 0]

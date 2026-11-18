@@ -4,7 +4,7 @@
 "Written, not run" means the code exists but has never run on a real PC / real Fortnite.
 Nothing here has been tested against real Fortnite yet.
 
-Versioning: v1.1.1 -> v1.1.13, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
+Versioning: v1.1.1 -> v1.1.16, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
 
 # MILESTONE 1 - Working tracker for you (v1.1.x)
 
@@ -21,7 +21,7 @@ Versioning: v1.1.1 -> v1.1.13, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [ ] YOU: confirm it looks right
 
 ## v1.1.4 - Hotkeys, click-through, launcher  [done, written not run]
-- [x] Global hotkeys, LOCKED click-through, double-click `run.bat`
+- [x] Global hotkeys, LOCKED click-through, double-click launcher (`run.bat` until v1.1.11, then `FortniteChestTracker.pyw`)
 - [ ] YOU: test hotkeys while Fortnite is focused
 
 ## v1.1.5 - Detection sound + overlay customisation  [done, written not run]
@@ -50,23 +50,32 @@ Versioning: v1.1.1 -> v1.1.13, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [x] Bar chart of chests per match (last 20)
 - [x] Today / Last 7 days cards - date maths unit-tested
 - [ ] YOU: finish a few matches, check the chart and both cards look right and update when you press +1
-## v1.1.10 - Detection engine v1 + debug view  [this release, written not run]
+## v1.1.10 - Detection engine v1 + debug view  [done, written not run]
 - [x] Region (ROI) template detector with confidence score - unit-tested on synthetic frames only
 - [x] Detection debug view: `--make-template`, `--detect-debug` (per-frame confidence, DETECTED / MISSED / FALSE ALARM, annotated pictures)
 - [ ] YOU: record real chest samples (`--record`), cut a template from one, run `--detect-debug` and send me the output + a few annotated pictures
 - Not wired into the live counter yet
-## v1.1.11 - Calibration + event validation (NEEDS your real samples)
+## v1.1.11 - Launcher without .bat  [done, written not run]
+- [x] `FortniteChestTracker.pyw` replaces `run.bat`: double-click, no console window, installs missing packages on first start, errors shown in a message box - launcher logic unit-tested
+- [ ] YOU: double-click it; check the main window opens with no black window. Test the first-run install if you can (e.g. in a fresh venv)
+- Only 1 change this version (the 2nd slot stayed free to keep it small)
+## v1.1.12 - Personal-best star + chart per day  [this release, written not run]
+- [x] History page: your best match(es) get a gold star and bold gold chest count (ties all count) - logic unit-tested
+- [x] Dashboard chart: **Show per day / Show per match** button (last 14 days, today on the right, the match in progress counts as today) - date maths unit-tested
+- [ ] YOU: finish a few matches; check the star on History and the per-day toggle on the Dashboard
+- Taken from the Backlog because calibration/detection need your real samples (not received yet)
+## v1.1.13 - Calibration + switch detection on (NEEDS your real samples)
 - [ ] Calibration screen: confirm resolution + set the watch region (basis for friends' setups)
-- [ ] Event state machine (prompt -> hold -> open) to cut false positives
 - [ ] Switch detection on in the live counter (status shows Detecting)
-## v1.1.12 - Replay tests + auto match detection
+## v1.1.14 - Event validation + replay tests (NEEDS your real samples)
+- [ ] Event state machine (prompt -> hold -> open) to cut false positives
 - [ ] Replay tests from recorded frames, accuracy numbers
+## v1.1.15 - Auto match + logging
 - [ ] Auto match start/reset (experimental, needs samples)
-## v1.1.13 - Packaging + logging
-- [ ] `.exe` build, release ZIP
 - [ ] Log file + "open logs" button (so a friend can send you a crash report)
+## v1.1.16 - Packaging
+- [ ] `.exe` build, release ZIP (replaces the .pyw for friends)
 - [ ] Real-gameplay test guide
-
 # MILESTONE 2 - Ready for friends (v1.2.x)
 
 ## v1.2.1 - Real-gameplay accuracy tuning
@@ -96,9 +105,8 @@ Versioning: v1.1.1 -> v1.1.13, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 
 # Backlog (ideas waiting for a version - rule: max 2 changes per version, the rest lands here)
 - Match comparison
-- Personal-best highlights
-- Chart over time (per day / per week), not just per match
-(Add new ideas below. Charts and daily/weekly totals were done in v1.1.9.)
+- Chart over time: per week view (per day was done in v1.1.12)
+(Add new ideas below. Charts and daily/weekly totals were done in v1.1.9; personal-best highlight + per-day chart in v1.1.12.)
 
 # Before sharing with friends (checklist)
 - [ ] Choose a licence (I will not pick one without asking)
@@ -108,5 +116,5 @@ Versioning: v1.1.1 -> v1.1.13, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 
 # Known limits
 - The detection engine (v1.1.10) exists but is not switched on and has never seen real Fortnite; it needs real samples from you.
-- The overlay is manual-count only until it is switched on (v1.1.11).
+- The overlay is manual-count only until it is switched on (v1.1.13).
 - Fortnite should run in Windowed Fullscreen for the overlay to show.

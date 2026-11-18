@@ -2,11 +2,12 @@
 from __future__ import annotations
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QAbstractItemView, QGridLayout, QHeaderView, QLabel, QTableWidget,
+from PySide6.QtWidgets import (QAbstractItemView, QGridLayout, QHBoxLayout, QHeaderView, QLabel, QPushButton, QTableWidget,
                                QTableWidgetItem, QVBoxLayout, QWidget)
 
 from app.ui.chart import BarChart
-from app.ui.dashboard_model import DETECTION_BANNER, chart_values, format_match_row, stat_cards
+from app.ui.dashboard_model import (DETECTION_BANNER, chart_values, daily_values, format_match_row,
+                                    stat_cards)
 from app.ui.widgets import Card
 
 HISTORY_ROWS = 10
@@ -39,9 +40,16 @@ class DashboardPage(QWidget):
             grid.addWidget(card, i // 4, i % 4)
         lay.addLayout(grid)
 
-        cap = QLabel("Chests per match (last 20, newest on the right)")
-        cap.setObjectName("sectionTitle")
-        lay.addWidget(cap)
+        self.per_day = False
+        cap_row = QHBoxLayout()
+        self.cap = QLabel("")
+        self.cap.setObjectName("sectionTitle")
+        cap_row.addWidget(self.cap)
+        cap_row.addStretch(1)
+        self.btn_mode = QPushButton("Show per day")
+        self.btn_mode.clicked.connect(self.toggle_chart)
+        cap_row.addWidget(self.btn_mode)
+        lay.addLayout(cap_row)
         self.chart = BarChart()
         lay.addWidget(self.chart)
 
@@ -65,8 +73,20 @@ class DashboardPage(QWidget):
         self.refresh_table()
         self.refresh_chart()
 
+    def toggle_chart(self) -> None:
+        self.per_day = not self.per_day
+        self.refresh_chart()
+
     def refresh_chart(self) -> None:
-        self.chart.set_data(chart_values(self.ctl.db, self.ctl.counter), self.ctl.settings.overlay_theme)
+        if self.per_day:
+            vals = daily_values(self.ctl.db, self.ctl.counter)
+            self.cap.setText("Chests per day (last 14 days, today on the right)")
+            self.btn_mode.setText("Show per match")
+        else:
+            vals = chart_values(self.ctl.db, self.ctl.counter)
+            self.cap.setText("Chests per match (last 20, newest on the right)")
+            self.btn_mode.setText("Show per day")
+        self.chart.set_data(vals, self.ctl.settings.overlay_theme)
 
     def refresh_cards(self) -> None:
         for card, (_, value) in zip(self.cards, stat_cards(self.ctl.stats())):

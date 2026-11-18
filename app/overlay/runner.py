@@ -1,7 +1,7 @@
 """Wires settings + controller + hotkeys + overlay (+ main window) together.
 
   python main.py --overlay   overlay only (also what "start with Windows" runs)
-  python main.py --app       main window + overlay (default for run.bat)
+  python main.py --app       main window + overlay (default for FortniteChestTracker.pyw)
 
 All state lives in TrackerController; this file only connects it to Qt and the hotkeys.
 """

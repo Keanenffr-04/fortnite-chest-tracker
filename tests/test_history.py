@@ -5,7 +5,7 @@ from app.config.settings import Settings
 from app.core.controller import TrackerController
 from app.core.sound import SoundPlayer
 from app.database.db import Database
-from app.ui.dashboard_model import export_filename, history_summary
+from app.ui.dashboard_model import best_flags, chests_label, export_filename, history_summary
 
 
 def make(tmp_path):
@@ -52,3 +52,14 @@ def test_controller_export_reports_bad_path(tmp_path):
     c = make(tmp_path)
     count, error = c.export_matches(tmp_path / "missing_folder" / "o.csv")
     assert count == 0 and error and error.startswith("Could not write the file")
+
+
+def test_best_flags_mark_best_and_ties_but_not_zero():
+    db = Database(":memory:")
+    assert best_flags(db.all_matches()) == []
+    for i, n in enumerate((3, 7, 7, 1)):
+        db.save_match(match(100.0 + i, n))
+    assert best_flags(db.all_matches()) == [False, True, True, False]      # newest first: 1, 7, 7, 3
+    db2 = Database(":memory:"); db2.save_match(match(1.0, 0))
+    assert best_flags(db2.all_matches()) == [False]
+    assert chests_label("7", True) == "\u2605 7" and chests_label("7", False) == "7"

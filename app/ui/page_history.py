@@ -5,10 +5,12 @@ import time
 from pathlib import Path
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor, QFont
 from PySide6.QtWidgets import (QAbstractItemView, QFileDialog, QHBoxLayout, QHeaderView, QLabel,
                                QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
-from app.ui.dashboard_model import export_filename, format_match_row, history_summary
+from app.ui.dashboard_model import (best_flags, chests_label, export_filename, format_match_row,
+                                    history_summary)
 
 
 class HistoryPage(QWidget):
@@ -49,7 +51,7 @@ class HistoryPage(QWidget):
         self.empty.setWordWrap(True)
         lay.addWidget(self.empty)
 
-        hint = QLabel("The match in progress is not listed or exported until you press New match.")
+        hint = QLabel("\u2605 = your personal best. The match in progress is not listed or exported until you press New match.")
         hint.setObjectName("hint")
         lay.addWidget(hint)
         self.refresh()
@@ -58,12 +60,17 @@ class HistoryPage(QWidget):
         rows = self.ctl.db.all_matches()
         self.summary.setText(history_summary(rows))
         self.table.setRowCount(len(rows))
+        flags = best_flags(rows)
         for r, row in enumerate(rows):
             cells = (str(len(rows) - r),) + format_match_row(row)    # oldest match = #1
+            cells = cells[:3] + (chests_label(cells[3], flags[r]),)
             for c, text in enumerate(cells):
                 item = QTableWidgetItem(text)
                 if c in (0, 3):
                     item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                if flags[r]:                              # personal best: gold + bold
+                    item.setForeground(QColor("#f5c542"))
+                    f = QFont(item.font()); f.setBold(True); item.setFont(f)
                 self.table.setItem(r, c, item)
         self.empty.setVisible(not rows)
         self.table.setVisible(bool(rows))

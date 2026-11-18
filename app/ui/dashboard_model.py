@@ -24,6 +24,29 @@ def chart_values(db, counter, limit: int = 20) -> list[int]:
     return vals[-limit:]
 
 
+def daily_values(db, counter, days: int = 14, now: float | None = None) -> list[int]:
+    """Chests per local day, oldest -> newest, ending with today (the match in progress counts as today)."""
+    now = time.time() if now is None else now
+    first = day_start(now, days - 1)
+    vals = [0] * days
+    for r in db.matches_since(first):
+        idx = (datetime.fromtimestamp(r["started_at"]).date() - datetime.fromtimestamp(first).date()).days
+        if 0 <= idx < days:
+            vals[idx] += r["chests"]
+    vals[-1] += counter.match_count
+    return vals
+
+
+def best_flags(rows) -> list[bool]:
+    """True for every match that equals the personal best (ties all count; a best of 0 is not a highlight)."""
+    best = max((r["chests"] for r in rows), default=0)
+    return [best > 0 and r["chests"] == best for r in rows]
+
+
+def chests_label(chests: str, is_best: bool) -> str:
+    return f"\u2605 {chests}" if is_best else chests
+
+
 def bar_fractions(values: list[int]) -> list[float]:
     """Bar heights as 0..1 of the tallest bar (an all-zero list gives all zeros)."""
     top = max(values, default=0)
