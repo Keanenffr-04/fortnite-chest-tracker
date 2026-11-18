@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.16
+- Added: **pirate token** drawn in code: a gold coin with a skull and crossbones (the Pirate Shop token look). Plain shapes and gradients, no copied game art. The coin geometry lives in `app/overlay/pirate.py` (no Qt, tested); `app/overlay/token_icon.py` paints it
+- Changed: the overlay in the **Pirate** theme now has its own background: dark chest-brown to black, gold border with a thin inner line, a big faded token behind the number and a small token next to "CHESTS OPENED". The other themes look exactly as before. Pick it in Settings > Theme or right-click the overlay > Theme > Pirate
+- Added: `coin_layout()`, `overlay_look()`; 3 new tests (the Qt painting is untested until run on Windows, so check how it looks and tell me what to change)
+- Only 2 changes. Your pirate-background request is split over 3 versions: overlay (v1.1.16, this), main window background + token window icon (v1.1.17), overlay polish + per-week chart (v1.1.18). Calibration/detection etc. shift by 1 (see ROADMAP)
+- Backlog now: match comparison, per-day table, calendar highlights, tooltips on every button, first-run tips, what to do with the old themes (you said you do not like them: remove them or make Pirate the default, I will ask first), pirate overlay extras
+
 ## v1.1.15
 - Added: **calendar button** (📅) on the History day card, next to the arrows. Opens a small calendar; click a day and the card jumps to it. Future days cannot be picked. The arrows and **Today** keep working from the picked day
 - Added: **Pirate** theme (gold + copper, from the gold coin with a skull and crossbones the Pirate Shop token shows) in Settings > Theme. It colours the overlay, the chart and this window like the other themes

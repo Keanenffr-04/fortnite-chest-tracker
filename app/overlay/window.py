@@ -1,4 +1,5 @@
 """The floating overlay window (PySide6). Custom-painted: dark, rounded, two accent colours.
+The Pirate theme (v1.1.16) paints a gold token (coin, skull and crossbones) as the background.
 
 Right-click for: add / remove chest, new match, opacity, size, theme, what to show, sound, quit.
 Drag with the left mouse button to move it; the position is saved.
@@ -6,17 +7,15 @@ Drag with the left mouse button to move it; the position is saved.
 from __future__ import annotations
 
 from PySide6.QtCore import QRectF, Qt, Signal
-from PySide6.QtGui import QColor, QFont, QLinearGradient, QPainter, QPen
+from PySide6.QtGui import QColor, QFont, QLinearGradient, QPainter, QPainterPath, QPen
 from PySide6.QtWidgets import QMenu, QWidget
 
+from app.overlay import pirate
 from app.overlay.model import (OPACITY_PRESETS, SIZE_PRESETS, STATUS_ERROR, STATUS_MANUAL,
                                STATUS_WATCHING, THEMES, scaled_size)
+from app.overlay.token_icon import draw_token
 
-BG_TOP = QColor(24, 20, 44)
-BG_BOTTOM = QColor(12, 12, 24)
 RED = QColor(239, 68, 68)
-WHITE = QColor(245, 245, 255)
-MUTED = QColor(160, 160, 190)
 
 
 class OverlayWindow(QWidget):
@@ -76,33 +75,49 @@ class OverlayWindow(QWidget):
         w, h = self.width(), self.height()
         rect = QRectF(2, 2, w - 4, h - 4)
 
+        look = pirate.overlay_look(o["theme"])
         bg = QLinearGradient(0, 0, 0, h)
-        bg.setColorAt(0, BG_TOP)
-        bg.setColorAt(1, BG_BOTTOM)
+        bg.setColorAt(0, QColor(*look["bg_top"]))
+        bg.setColorAt(1, QColor(*look["bg_bottom"]))
         border = QLinearGradient(0, 0, w, h)
         border.setColorAt(0, a1)
         border.setColorAt(1, a2)
         p.setBrush(bg)
         p.setPen(QPen(border, 2 * k))
         p.drawRoundedRect(rect, 16 * k, 16 * k)
+        white = QColor(*look["text"])
+        muted = QColor(*look["muted"])
+
+        if look["pirate"]:
+            # faded coin watermark behind the number, thin inner gold line, small coin by the title
+            p.save()
+            p.setClipPath(self._rounded_path(rect, 16 * k))
+            draw_token(p, w - 0.30 * h - 8 * k, h * 0.52, 0.46 * h, look["watermark_alpha"])
+            p.restore()
+            inner = QRectF(rect).adjusted(5 * k, 5 * k, -5 * k, -5 * k)
+            p.setBrush(Qt.BrushStyle.NoBrush)
+            p.setPen(QPen(QColor(a2.red(), a2.green(), a2.blue(), 90), 1 * k))
+            p.drawRoundedRect(inner, 12 * k, 12 * k)
+            draw_token(p, 26 * k, 20 * k, 8 * k)
 
         pad = 16 * k
+        title_x = pad + (22 * k if look["pirate"] else 0)
         left = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         right = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
 
         # title (+ status)
         p.setFont(self._font(9, True, k))
         p.setPen(a1)
-        p.drawText(QRectF(pad, 10 * k, w / 2, 20 * k), left, "CHESTS OPENED")
+        p.drawText(QRectF(title_x, 10 * k, w / 2, 20 * k), left, "CHESTS OPENED")
         if o["show_status"]:
             status = self._data["status"]
-            p.setPen(a2 if status == STATUS_WATCHING else (RED if status == STATUS_ERROR else MUTED))
+            p.setPen(a2 if status == STATUS_WATCHING else (RED if status == STATUS_ERROR else muted))
             p.setFont(self._font(8, True, k))
             p.drawText(QRectF(w / 2, 10 * k, w / 2 - pad, 20 * k), right, status)
 
         # big match count
         p.setFont(self._font(38, True, k))
-        p.setPen(WHITE)
+        p.setPen(white)
         p.drawText(QRectF(pad, 28 * k, w - 2 * pad, 56 * k), left, str(self._data["match"]))
 
         # footer: session + timer
@@ -110,7 +125,7 @@ class OverlayWindow(QWidget):
             y = h - 34 * k
             p.setFont(self._font(10, False, k))
             if o["show_session"]:
-                p.setPen(MUTED)
+                p.setPen(muted)
                 p.drawText(QRectF(pad, y, w / 2, 22 * k), left, f"SESSION  {self._data['session']}")
             if o["show_timer"]:
                 p.setPen(a2)
@@ -126,6 +141,12 @@ class OverlayWindow(QWidget):
             p.drawText(QRectF(0, h - 26 * k, w, 16 * k),
                        Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter, "LOCKED")
         p.end()
+
+    @staticmethod
+    def _rounded_path(rect: QRectF, radius: float) -> QPainterPath:
+        path = QPainterPath()
+        path.addRoundedRect(rect, radius, radius)
+        return path
 
     @staticmethod
     def _font(pt: float, bold: bool, k: float) -> QFont:

@@ -4,7 +4,7 @@
 "Written, not run" means the code exists but has never run on a real PC / real Fortnite.
 Nothing here has been tested against real Fortnite yet.
 
-Versioning: v1.1.1 -> v1.1.21, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
+Versioning: v1.1.1 -> v1.1.22, then v1.2.1 -> v1.2.x, then v1.3.x. One git branch per version.
 
 # MILESTONE 1 - Working tracker for you (v1.1.x)
 
@@ -72,26 +72,31 @@ Versioning: v1.1.1 -> v1.1.21, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [x] Live Tracker + Settings pages: cards, plain-English text, hover tips
 - [x] Sidebar polish (nav highlight, tooltips, button sizes)
 - [ ] YOU: check Live Tracker, every Settings section and the sidebar look right and nothing is cut off
-## v1.1.15 - Calendar + Pirate colours  [this release, written not run]
+## v1.1.15 - Calendar + Pirate colours  [done, written not run]
 - [x] History: calendar button next to the day arrows, click a day to jump to it - date maths unit-tested
-- [x] **Pirate** theme (gold + copper) in the theme picker - researched: the Pirate Shop token is a gold coin with a skull and crossbones
-- [ ] YOU: open History, press the calendar button, pick a past day, check the card, arrows and Today; pick Pirate in Settings > Theme and check the overlay, chart and window
-## v1.1.16 - Pirate token icon + overlay restyle  [planned]
-- [ ] Token icon drawn in code (gold coin, skull and crossbones, no copied game art)
-- [ ] Overlay counter + cards restyled to the pirate look (theme picker already has it)
-## v1.1.17 - Overlay polish + per-week chart  [planned]
+- [x] **Pirate** theme (gold + copper) in the theme picker
+- [ ] YOU: open History, press the calendar button, pick a past day, check the card, arrows and Today
+## v1.1.16 - Pirate token icon + overlay background  [this release, written not run]
+- [x] Pirate token (gold coin, skull and crossbones) drawn in code - no copied game art; coin geometry unit-tested
+- [x] Overlay in the Pirate theme: dark chest-brown background, gold border, big faded token behind the number, small token by the title
+- [ ] YOU: Settings > Theme > Pirate (or right-click the overlay > Theme > Pirate); press Start stream and check the overlay looks like the Fortnite pirate token. Tell me what to change (colours, coin size, skull style)
+- The pirate background is split over 3 versions: overlay now (v1.1.16), main window (v1.1.17), polish + chart (v1.1.18)
+## v1.1.17 - Pirate look for the main window  [planned]
+- [ ] Main window background in the pirate style (sidebar, cards, pages, token watermark) when the Pirate theme is chosen
+- [ ] Token as the window / taskbar icon and in the sidebar header
+## v1.1.18 - Overlay polish + per-week chart  [planned]
 - [ ] Overlay window polish (moved from v1.1.14)
 - [ ] Dashboard chart: per week view (from the Backlog)
-## v1.1.18 - Calibration + switch detection on (NEEDS your real samples)
+## v1.1.19 - Calibration + switch detection on (NEEDS your real samples)
 - [ ] Calibration screen: confirm resolution + set the watch region (basis for friends' setups)
 - [ ] Switch detection on in the live counter (status shows Detecting)
-## v1.1.19 - Event validation + replay tests (NEEDS your real samples)
+## v1.1.20 - Event validation + replay tests (NEEDS your real samples)
 - [ ] Event state machine (prompt -> hold -> open) to cut false positives
 - [ ] Replay tests from recorded frames, accuracy numbers
-## v1.1.20 - Auto match + logging
+## v1.1.21 - Auto match + logging
 - [ ] Auto match start/reset (experimental, needs samples)
 - [ ] Log file + "open logs" button (so a friend can send you a crash report)
-## v1.1.21 - Packaging
+## v1.1.22 - Packaging
 - [ ] `.exe` build, release ZIP (replaces the .pyw for friends)
 - [ ] Real-gameplay test guide
 # MILESTONE 2 - Ready for friends (v1.2.x)
@@ -126,6 +131,8 @@ Versioning: v1.1.1 -> v1.1.21, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - Per-day table on History (v1.1.15 added the calendar picker; a full table/month view is still open)
 - Calendar highlights the days that have matches
 - Tooltips on every button + first-run tips for friends
+- Decide what to do with the old themes (violet / blue / green / red): remove them, or make Pirate the default for new installs (ask you first)
+- Pirate overlay extras: animated gold shimmer when a chest is counted, pirate-style fonts
 (Add new ideas below. Charts and daily/weekly totals were done in v1.1.9; personal-best highlight + per-day chart in v1.1.12.)
 
 # Before sharing with friends (checklist)
@@ -136,5 +143,5 @@ Versioning: v1.1.1 -> v1.1.21, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 
 # Known limits
 - The detection engine (v1.1.10) exists but is not switched on and has never seen real Fortnite; it needs real samples from you.
-- The overlay is manual-count only until it is switched on (v1.1.18).
+- The overlay is manual-count only until it is switched on (v1.1.19).
 - Fortnite should run in Windowed Fullscreen for the overlay to show.
