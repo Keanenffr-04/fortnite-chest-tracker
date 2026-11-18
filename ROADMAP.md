@@ -24,16 +24,20 @@ Versioning: v1.1.1 -> v1.1.10, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - [x] Global hotkeys, LOCKED click-through, double-click `run.bat`
 - [ ] YOU: test hotkeys while Fortnite is focused
 
-## v1.1.5 - Detection sound + overlay customisation  [this release, written not run]
+## v1.1.5 - Detection sound + overlay customisation  [done, written not run]
 - [x] Notification sounds (rising = counted, falling = removed), volume setting - WAV generation unit-tested
 - [x] Right-click menu: opacity, size, theme, show/hide status/session/timer, sound on/off
 - [x] Option validation, old settings files still load - unit-tested
 - [ ] YOU: check the menu works and the sound plays (needs Windows)
 
-## v1.1.6 - Dashboard + Live Tracker page + Settings page
-- [ ] Main window, dark theme, purple/blue cards
-- [ ] Live Tracker: counter, status, recent events, manual correction
-- [ ] Settings page (overlay, hotkeys, detection, sound, startup, data, reset)
+## v1.1.6 - Dashboard + Live Tracker page + Settings page  [this release, written not run]
+- [x] Main window (`--app`), dark theme, purple/blue cards - theme colour follows the overlay theme
+- [x] Dashboard: stat cards + recent matches
+- [x] Live Tracker: counter, status, recent events, manual correction, show/hide overlay
+- [x] Settings page (overlay, hotkeys, detection, sound, startup, data, reset) - validation, hotkey conflicts, start-with-Windows unit-tested with a fake registry
+- [ ] YOU: run `run.bat`; check all three pages look right, Apply works, the overlay follows setting changes
+- [ ] YOU: tick "Start with Windows", reboot/sign out, check the overlay appears; untick and check it stops
+- [ ] YOU: change a hotkey in Settings and check the new one works in Fortnite (and the old one stops)
 ## v1.1.7 - Statistics, charts, match history, CSV export button
 - [ ] Totals, averages, personal best, daily/weekly, match comparison
 - [ ] Charts, match history table, export button
@@ -87,4 +91,3 @@ Versioning: v1.1.1 -> v1.1.10, then v1.2.1 -> v1.2.x, then v1.3.x. One git branc
 - No chest detection exists until v1.1.8, and it needs real Fortnite samples from you.
 - The overlay is manual-count only until then.
 - Fortnite should run in Windowed Fullscreen for the overlay to show.
-- Hotkeys can be changed only via settings.json until the Settings page (v1.1.6).

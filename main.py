@@ -26,6 +26,14 @@ def selftest() -> int:
         assert db.total_chests() == 2
         db.close()
         s = Settings(); s.save(Path(d) / "s.json"); Settings.load(Path(d) / "s.json")
+        from app.core.controller import TrackerController
+        from app.core.sound import SoundPlayer
+        ctl = TrackerController(Settings(), Database(Path(d) / "c.db"), SoundPlayer(Path(d) / "snd", False, player=None),
+                                settings_path=Path(d) / "c.json", startup_setter=lambda on: None)
+        ctl.add(); ctl.add(); ctl.new_match()
+        assert ctl.stats()["total"] == 2
+        assert ctl.apply_changes({"overlay_theme": "blue"}) == ([], [])
+        ctl.finish()
     print(f"Fortnite Chest Tracker {__version__}: self-test passed (synthetic data only).")
     return 0
 
@@ -35,7 +43,8 @@ def main() -> int:
     p.add_argument("--version", action="store_true")
     p.add_argument("--selftest", action="store_true")
     p.add_argument("--record", action="store_true", help="record chest samples with hotkeys")
-    p.add_argument("--overlay", action="store_true", help="show the live overlay (manual counting for now)")
+    p.add_argument("--app", action="store_true", help="open the main window (dashboard) + overlay")
+    p.add_argument("--overlay", action="store_true", help="show only the live overlay (manual counting for now)")
     p.add_argument("--benchmark", action="store_true", help="measure screen capture speed")
     a = p.parse_args()
     if a.version:
@@ -45,6 +54,9 @@ def main() -> int:
     if a.record:
         from app.capture.tool import run_record
         return run_record()
+    if a.app:
+        from app.overlay.runner import run_app
+        return run_app()
     if a.overlay:
         from app.overlay.runner import run_overlay
         return run_overlay()
@@ -52,9 +64,9 @@ def main() -> int:
         from app.capture.tool import run_benchmark
         return run_benchmark()
     print(f"Fortnite Chest Tracker {__version__}\n"
-          "Chest detection and the dashboard are NOT built yet (see ROADMAP.md).\n"
-          "Run with --selftest to verify the core logic,\n"
-          "--overlay to show the overlay, --benchmark to measure capture, --record to collect samples.")
+          "Chest detection is NOT built yet (see ROADMAP.md).\n"
+          "Run with --app for the dashboard + overlay, --overlay for the overlay only,\n"
+          "--selftest to verify the core logic, --benchmark to measure capture, --record to collect samples.")
     return 0
 
 

@@ -19,6 +19,7 @@ class HotkeyManager(QObject):
 
     def start(self, bindings: dict[str, str], problems: list[str]) -> bool:
         self.problems = list(problems)
+        self.active = []
         try:
             import keyboard
         except ImportError:
@@ -32,6 +33,11 @@ class HotkeyManager(QObject):
             except Exception as e:  # invalid key name etc.
                 self.problems.append(f"{action} ({hotkey!r}): {e}")
         return bool(self.active)
+
+    def reload(self, bindings: dict[str, str], problems: list[str]) -> bool:
+        """Drop every registered hotkey and register the new set (after a settings change)."""
+        self.stop()
+        return self.start(bindings, problems)
 
     def has(self, action: str) -> bool:
         return action in self.active

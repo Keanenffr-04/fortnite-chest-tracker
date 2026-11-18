@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.1.6
+- Added: main window (`--app`, now what `run.bat` opens) with a dark purple/blue theme and three pages
+- Added: Dashboard (this match / session / total / matches / average / personal best + recent matches)
+- Added: Live Tracker (big counter, status, match time, +1 / -1 / New match, recent events list, show/hide overlay)
+- Added: Settings page (overlay, hotkeys, detection, sound + test sound, start with Windows, open data folder, reset statistics, reset settings). Hotkeys can now be changed in the app; invalid or duplicate hotkeys are refused with a reason and nothing is half-saved
+- Added: start with Windows (per-user registry Run entry, starts the overlay only)
+- Changed: overlay and window share one `TrackerController` (counts, settings, sound, database), so they always agree. Hotkeys are only re-registered when one actually changed
+- Added: 36 tests (78 total) for the controller, settings validation, stats/formatting, theme and startup. The Qt windows and the Windows registry call are untested until run on Windows
+- Not included yet: charts, full match history, CSV export button (v1.1.7); detection (v1.1.8)
+
 ## v1.1.5
 - Added: notification sounds (generated WAVs, played with winsound), volume setting
 - Added: right-click menu for opacity, size, theme (violet/blue/green/red), show/hide status/session/timer, sound
